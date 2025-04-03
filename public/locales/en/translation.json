@@ -1,0 +1,11 @@
+{
+    "navbar":{
+        "home": "Home",
+        "news": "News",
+        "aboutUs": "About us",
+        "courses": "Courses"
+    },
+    "banners":{
+        "SignCourses": "Sign up for courses"
+    }
+}

@@ -1,0 +1,139 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #000;  /* Changed to black to prevent white flash between slides */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  height: 450px;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-slide:hover img {
+  transform: scale(1.05);
+}
+
+/* Modern pagination bullets */
+.swiper-pagination {
+  bottom: 16px !important;
+  z-index: 20;  /* Ensure pagination is visible above content */
+}
+
+.swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  background: #ffffff;
+  transform: scale(1.2);
+}
+
+/* Navigation arrows styling */
+.swiper-button-next,
+.swiper-button-prev {
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  z-index: 20;  /* Ensure buttons are visible above content */
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: rgba(0, 0, 0, 0.6);
+  transform: scale(1.1);
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animation-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animation-delay-600 {
+  animation-delay: 0.6s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .swiper-slide {
+    height: 350px;
+  }
+  
+  .swiper-slide h2 {
+    font-size: 1.75rem;
+  }
+  
+  .swiper-slide p {
+    font-size: 1rem;
+  }
+}
+
+/* Button styling override for Ant Design */
+.ant-btn-primary {
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+}
+
+.ant-btn-primary:hover {
+  background-color: #096dd9 !important;
+  border-color: #096dd9 !important;
+}
+
+/* Fix for fade effect transitions */
+.swiper-fade .swiper-slide {
+  pointer-events: none;
+  transition-property: opacity;
+}
+
+.swiper-fade .swiper-slide-active {
+  pointer-events: auto;
+}
+
+/* Ensure the component works even in containers with overflow hidden */
+.mySwiper {
+  overflow: visible !important;
+}

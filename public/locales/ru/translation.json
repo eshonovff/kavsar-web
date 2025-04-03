@@ -1,0 +1,11 @@
+{
+    "navbar": {
+        "home": "Главная",
+        "news": "Новости",
+        "aboutUs": "О нас",
+        "courses": "Курсы"
+    },
+    "banners":{
+        "SignCourses": "Запишитесь на курсы"
+    }
+}
