@@ -31,7 +31,7 @@ const App = () => {
     ]
   }])
   return (
-    <div className="">
+    <div className="min-w-[400px]">
        <Toaster/>
        <RouterProvider router={router}/> 
     </div>

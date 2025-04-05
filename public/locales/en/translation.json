@@ -1,11 +1,39 @@
 {
-    "navbar":{
-        "home": "Home",
-        "news": "News",
-        "aboutUs": "About us",
-        "courses": "Courses"
+  "navbar": {
+    "home": "Home",
+    "news": "News",
+    "aboutUs": "About us",
+    "courses": "Courses"
+  },
+  "banners": {
+    "SignCourses": "Sign up for courses"
+  },
+  "chooseUs": {
+    "title": "Why choose us?"
+  },
+
+  "HomePage": {
+    "title": "Our Educational Center",
+    "description": "The Kavsar Educational Center was established in Dushanbe in 2021. Today, it is one of the leading educational institutions in Tajikistan. With a clear and effective system, it not only focuses on theoretical knowledge but also includes practical training (with native speakers), delivering results in just a week. High-quality language programs for students of all ages.",
+    "year": "YEARS OF EXPERIENCE",
+    "student": "GRADUATES",
+    "place": "BRANCHES",
+    "college": "STAFF",
+    "courses": {
+      "title": "Our Courses",
+      "description": "Our courses offer a wide range of knowledge and professional skills. You can gain not only education but also abilities that will help you on your path to success.",
+      "button": "More about courses",
+      "showmore": "Show more",
+      "hide": "Hide"
     },
-    "banners":{
-        "SignCourses": "Sign up for courses"
+
+    "section": {
+      "title": "Sign up for your first lesson!",
+      "description": "Start your journey to success today! Leave a request and our manager will contact you."
+    },
+    "VideoReview": {
+      "title": "Graduates’ Feedback",
+      "description": "Hear what our successful graduates have to say about the courses and get valuable recommendations from them."
     }
+  }
 }

@@ -1,0 +1,46 @@
+/* VideoReviewTailwind.css */
+
+/* Стили для видео - сохраняем только необходимый минимум */
+.video-player {
+    object-fit: cover;
+    height: auto; /* Высота рассчитывается автоматически */
+    border-radius: 8px;
+  }
+  
+  .video-frame-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0; /* Добавляем отступы вверху и внизу */
+  }
+  
+  /* Стили для пагинации Swiper */
+  .custom-pagination .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background-color: #ccc;
+    opacity: 1;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+  }
+  
+  .custom-pagination .swiper-pagination-bullet-active {
+    background-color: #3b82f6; /* Цвет Tailwind blue-500 */
+    width: 30px;
+    border-radius: 5px;
+  }
+  
+  /* Стили для Swiper */
+  .reviews-swiper {
+    width: 100%;
+    position: relative;
+    padding-bottom: 40px; /* Дополнительное пространство для пагинации */
+  }
+  
+  /* Медиа-запросы для адаптивности */
+  @media (max-width: 640px) {
+    .video-frame-container {
+      padding: 15px 0;
+    }
+  }

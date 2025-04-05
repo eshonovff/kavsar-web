@@ -9,7 +9,7 @@ import engFlag from "/src/assets/united-kingdom.png";
 import { useDispatch } from "react-redux";
 
 import "./LanguageSelect.css"; // Add a CSS file for custom styles
-import { GetBanner } from "../../Api/bannerApi";
+import { GetBanner, GetChooseUs, GetCourse, GetVideoReview } from "../../Api/bannerApi";
 
 const LanguageSelect = () => {
   const dispatch = useDispatch();
@@ -21,17 +21,20 @@ const LanguageSelect = () => {
     { code: "ru", name: "Русский", nick: "Ru", flag: russFlag },
     { code: "tj", name: "Тоҷикӣ", nick: "Tj", flag: tajFlag },
     { code: "en", name: "English", nick: "En", flag: engFlag },
-  ];
+  ];  
 
   const handleChangeLanguage = (lang) => {
     i18n.changeLanguage(lang.code);
     setFlag(lang.flag);
     setAnchorEl(null);
     dispatch(GetBanner(lang.nick));
+    dispatch(GetChooseUs(lang.nick));
+     dispatch(GetCourse(lang.nick));
+     dispatch(GetVideoReview(lang.nick));
   };
 
   return (
-    <div className="language-select-container">
+    <div className="language-select-container backdrop-blur-2xl rounded-xl ">
       <IconButton
         onClick={(e) => setAnchorEl(e.currentTarget)}
         sx={{

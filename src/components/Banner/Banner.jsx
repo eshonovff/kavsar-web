@@ -15,7 +15,6 @@ const Banner = () => {
   const dispatch = useDispatch();
   const { data: banners } = useSelector((state) => state.BannerSlicer);
   const { t } = useTranslation();
-  
   useEffect(() => {
     dispatch(GetBanner());
   }, [dispatch]);
@@ -26,18 +25,18 @@ const Banner = () => {
   }
 
   return (
-    <div className="relative h-[450px] max-w-[1500px] w-full m-auto">
+    <div className="relative h-[450px] max-w-[1500px] w-full m-auto px-16 pt-10">
       <Swiper
         spaceBetween={0}
         centeredSlides={true}
         autoplay={{
-          delay: 2500,  // Increased delay for better visibility
+          delay: 2500,  
           disableOnInteraction: false,
-          pauseOnMouseEnter: false,  // Ensure it doesn't pause on hover
+          pauseOnMouseEnter: false,  
         }}
         effect="fade"
         fadeEffect={{ 
-          crossFade: true  // Enable cross-fade for smoother transitions
+          crossFade: true  
         }}
         pagination={{
           clickable: true,
@@ -48,7 +47,7 @@ const Banner = () => {
         modules={[Autoplay, Pagination, Navigation, EffectFade]}
         className="mySwiper"
       >
-        {banners.map((banner) => (
+        {banners?.map((banner) => (
           <SwiperSlide key={banner.id} className="relative overflow-hidden rounded-lg shadow-xl">
             <div className="absolute inset-0 h-[450px]">
               {banner.imagePath && (
@@ -71,17 +70,82 @@ const Banner = () => {
                   {banner.description}
                 </p>
               )}
-              <Button 
-                type="primary" 
-                size="large"
-                className="bg-blue-600 hover:bg-blue-700 border-none text-white px-8 py-4 text-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in-up animation-delay-600"
-              >
-                {t("banners.SignCourses")}
-              </Button>
+              
+              <div className="group">
+                <Button 
+                  type="primary"
+                  style={{
+                    background: "linear-gradient(to right, #6366f1, #8b5cf6)",
+                    color: "white",
+                    border: "none",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    position: "relative",
+                    zIndex: 10,
+                    padding: "10px 16px",
+                    paddingTop: "8px",
+                    paddingBottom: "8px",
+                    borderRadius: "0.5rem",
+                    boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                    transition: "all 0.3s",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    overflow: "hidden"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(99, 102, 241, 0.4), 0 2px 4px -1px rgba(99, 102, 241, 0.06)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                >
+                  <span style={{ position: "relative", zIndex: 10, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    {t("banners.SignCourses")}
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      style={{ 
+                        height: "1rem", 
+                        width: "1rem",
+                        transition: "transform 0.3s"
+                      }}
+                      className="group-hover-svg"
+                      viewBox="0 0 20 20" 
+                      fill="currentColor"
+                    >
+                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </span>
+                  <span 
+                    className="white-wave"
+                    style={{ 
+                      position: "absolute", 
+                      inset: 0, 
+                      backgroundColor: "white", 
+                      opacity: 0.2, 
+                      transform: "translateX(-100%)",
+                      transition: "transform 0.7s"
+                    }}
+                  ></span>
+                </Button>
+              </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* Add styles for hover effects */}
+      <style jsx>{`
+        .group:hover .white-wave {
+          transform: translateX(100%) !important;
+        }
+        
+        .group:hover .group-hover-svg {
+          transform: translateX(4px);
+        }
+      `}</style>
     </div>
   );
 }
