@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import logo from "../assets/IMG_0318.png";
 import { Button } from "antd";
 import { useTranslation } from "react-i18next";
@@ -6,6 +6,21 @@ import LanguageSelect from "../components/LanguageSelect/LanguageSelect";
 
 const Layout = () => {
   const { t } = useTranslation();
+  const location = useLocation(); // Получаем текущий путь
+  
+  // Функция для определения, является ли путь активным
+  const isActive = (path) => {
+    if (path === '/' && location.pathname === '/') {
+      return true;
+    }
+    return path !== '/' && location.pathname.startsWith(path);
+  };
+
+  // Стиль для активной кнопки
+  const activeStyle = {
+    background: "linear-gradient(to top, rgba(49, 46, 129, 0.6), rgba(88, 28, 135, 0.6))",
+    color: "white"
+  };
 
   return (
     <div>
@@ -24,6 +39,7 @@ const Layout = () => {
                   fontSize: "16px",
                   margin: "8px 0",
                   transition: "all 0.3s",
+                  ...(isActive('/') ? activeStyle : {})
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background =
@@ -31,8 +47,13 @@ const Layout = () => {
                   e.currentTarget.style.color = "white";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "";
-                  e.currentTarget.style.color = "";
+                  if (!isActive('/')) {
+                    e.currentTarget.style.background = "";
+                    e.currentTarget.style.color = "";
+                  } else {
+                    e.currentTarget.style.background = activeStyle.background;
+                    e.currentTarget.style.color = activeStyle.color;
+                  }
                 }}
               >
                 {t("navbar.home")}
@@ -47,6 +68,7 @@ const Layout = () => {
                   fontSize: "16px",
                   margin: "8px 0",
                   transition: "all 0.3s",
+                  ...(isActive('/courses') ? activeStyle : {})
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background =
@@ -54,8 +76,13 @@ const Layout = () => {
                   e.currentTarget.style.color = "white";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "";
-                  e.currentTarget.style.color = "";
+                  if (!isActive('/courses')) {
+                    e.currentTarget.style.background = "";
+                    e.currentTarget.style.color = "";
+                  } else {
+                    e.currentTarget.style.background = activeStyle.background;
+                    e.currentTarget.style.color = activeStyle.color;
+                  }
                 }}
               >
                 {t("navbar.courses")}
@@ -70,6 +97,7 @@ const Layout = () => {
                   fontSize: "16px",
                   margin: "8px 0",
                   transition: "all 0.3s",
+                  ...(isActive('/news') ? activeStyle : {})
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background =
@@ -77,8 +105,13 @@ const Layout = () => {
                   e.currentTarget.style.color = "white";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "";
-                  e.currentTarget.style.color = "";
+                  if (!isActive('/news')) {
+                    e.currentTarget.style.background = "";
+                    e.currentTarget.style.color = "";
+                  } else {
+                    e.currentTarget.style.background = activeStyle.background;
+                    e.currentTarget.style.color = activeStyle.color;
+                  }
                 }}
               >
                 {t("navbar.news")}
@@ -93,6 +126,7 @@ const Layout = () => {
                   fontSize: "16px",
                   margin: "8px 0",
                   transition: "all 0.3s",
+                  ...(isActive('/about') ? activeStyle : {})
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background =
@@ -100,8 +134,13 @@ const Layout = () => {
                   e.currentTarget.style.color = "white";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "";
-                  e.currentTarget.style.color = "";
+                  if (!isActive('/about')) {
+                    e.currentTarget.style.background = "";
+                    e.currentTarget.style.color = "";
+                  } else {
+                    e.currentTarget.style.background = activeStyle.background;
+                    e.currentTarget.style.color = activeStyle.color;
+                  }
                 }}
               >
                 {t("navbar.aboutUs")}
@@ -109,6 +148,7 @@ const Layout = () => {
             </Link>
           </div>
 
+          {/* Остальная часть кода остается без изменений */}
           <div className="flex justify-between items-center w-[23%]">
             <LanguageSelect />
             
@@ -166,7 +206,7 @@ const Layout = () => {
                   }
                 }}
               >
-                <span  style={{ position: "relative", zIndex: 10, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span style={{ position: "relative", zIndex: 10, display: "flex", alignItems: "center", gap: "0.5rem" }}>
                   {t("banners.SignCourses")}
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
@@ -200,6 +240,7 @@ const Layout = () => {
       </header>
 
       <Outlet />
+      {/* Остальная часть кода (футер) остается без изменений */}
       <footer className="bg-gradient-to-t from-indigo-900 to-purple-900 text-white py-14 mt-10">
         <div className="max-w-[1500px] w-full mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -10,6 +10,9 @@ import Course from "../../components/Course/Course";
 import { Button } from "antd";
 import Image1 from "../../assets/IMG_1448.png";
 import VideoReview from "../../components/VideoReview/VideoReview";
+import Request from "../../components/Request/Request";
+import TextReview from "../../components/VideoReview/TextReview";
+import Adress from "../../components/Adress/Adress";
 
 const Homeus = () => {
   const dispatch = useDispatch();
@@ -202,16 +205,16 @@ const Homeus = () => {
           <div className="absolute bottom-10 right-20 w-48 h-48 bg-indigo-200 rounded-full opacity-40"></div>
           <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-pink-200 rounded-full opacity-30"></div>
         </div>
-        
+
         <div className="max-w-[1500px] m-auto w-full flex flex-col md:flex-row items-center justify-between gap-12 px-6 z-10">
-          <motion.div 
+          <motion.div
             className="flex flex-col max-w-md space-y-6"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <motion.h1 
+            <motion.h1
               className="text-4xl font-bold text-gray-800 leading-tight"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -220,7 +223,7 @@ const Homeus = () => {
             >
               {t("HomePage.section.title")}
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-lg text-gray-600"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -238,7 +241,7 @@ const Homeus = () => {
               whileTap={{ scale: 0.95 }}
               className="group"
             >
-              <Button
+              <button
                 type="primary"
                 style={{
                   background: "linear-gradient(to right, #6366f1, #8b5cf6)",
@@ -248,89 +251,108 @@ const Homeus = () => {
                   fontSize: "16px",
                   position: "relative",
                   zIndex: 10,
-                  padding: "12px 16px", 
+                  padding: "12px 16px",
                   borderRadius: "0.5rem",
-                  boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                  boxShadow:
+                    "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
                   transition: "all 0.3s",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  overflow: "hidden"
+                  overflow: "hidden",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(99, 102, 241, 0.4), 0 2px 4px -1px rgba(99, 102, 241, 0.06)";
+                  e.currentTarget.style.boxShadow =
+                    "0 4px 6px -1px rgba(99, 102, 241, 0.4), 0 2px 4px -1px rgba(99, 102, 241, 0.06)";
                   e.currentTarget.style.transform = "translateY(-2px)";
-                  
+
                   // Анимация для волны
-                  const waveElement = e.currentTarget.querySelector('.wave-effect');
+                  const waveElement =
+                    e.currentTarget.querySelector(".wave-effect");
                   if (waveElement) {
                     waveElement.style.transform = "translateX(100%)";
                   }
-                  
+
                   // Анимация для иконки
-                  const iconElement = e.currentTarget.querySelector('.arrow-icon');
+                  const iconElement =
+                    e.currentTarget.querySelector(".arrow-icon");
                   if (iconElement) {
                     iconElement.style.transform = "translateX(4px)";
                   }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)";
+                  e.currentTarget.style.boxShadow =
+                    "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)";
                   e.currentTarget.style.transform = "translateY(0)";
-                  
+
                   // Сброс анимации для волны
-                  const waveElement = e.currentTarget.querySelector('.wave-effect');
+                  const waveElement =
+                    e.currentTarget.querySelector(".wave-effect");
                   if (waveElement) {
                     waveElement.style.transform = "translateX(-100%)";
                   }
-                  
+
                   // Сброс анимации для иконки
-                  const iconElement = e.currentTarget.querySelector('.arrow-icon');
+                  const iconElement =
+                    e.currentTarget.querySelector(".arrow-icon");
                   if (iconElement) {
                     iconElement.style.transform = "translateX(0)";
                   }
                 }}
               >
-                <span style={{ position: "relative", zIndex: 10, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span
+                  style={{
+                    position: "relative",
+                    zIndex: 10,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
                   {t("banners.SignCourses")}
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
                     className="arrow-icon"
-                    style={{ 
-                      height: "1rem", 
+                    style={{
+                      height: "1rem",
                       width: "1rem",
-                      transition: "transform 0.3s"
+                      transition: "transform 0.3s",
                     }}
-                    viewBox="0 0 20 20" 
+                    viewBox="0 0 20 20"
                     fill="currentColor"
                   >
-                    <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    <path
+                      fillRule="evenodd"
+                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </span>
-                <span 
+                <span
                   className="wave-effect"
-                  style={{ 
-                    position: "absolute", 
-                    inset: 0, 
-                    backgroundColor: "white", 
-                    opacity: 0.2, 
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    backgroundColor: "white",
+                    opacity: 0.2,
                     transform: "translateX(-100%)",
-                    transition: "transform 0.7s"
+                    transition: "transform 0.7s",
                   }}
                 ></span>
-              </Button>
+              </button>
             </motion.div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="w-full md:w-1/2 flex justify-center"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            <img 
-              src={Image1} 
-              alt="Education concept" 
+            <img
+              src={Image1}
+              alt="Education concept"
               className="object-cover rounded-lg shadow-xl max-h-96 hover:shadow-2xl transition-shadow duration-300"
             />
           </motion.div>
@@ -338,6 +360,14 @@ const Homeus = () => {
       </section>
 
       <VideoReview />
+
+      <Request />
+
+      <TextReview />
+
+
+
+      <Adress />
     </div>
   );
 };

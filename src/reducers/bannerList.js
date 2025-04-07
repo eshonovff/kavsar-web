@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GetBanner, GetChooseUs, GetCourse, GetGalerry, GetVideoReview } from "../Api/bannerApi";
+import { GetBanner, GetChooseUs, GetCourse, GetGalerry, GetTextReview, GetVideoReview } from "../Api/bannerApi";
 
 
 const initialState = {
@@ -8,6 +8,7 @@ const initialState = {
   galerry:[],
   course:[],
   videoReview:[],
+  textReview:[],
 };
 
 export const BannerSlicer = createSlice({
@@ -29,6 +30,9 @@ export const BannerSlicer = createSlice({
     });
     builder.addCase(GetVideoReview.fulfilled, (state, action) => {
       state.videoReview = action.payload;
+    });
+    builder.addCase(GetTextReview.fulfilled, (state, action) => {
+      state.textReview = action.payload;
     });
   },
 });

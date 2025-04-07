@@ -35,5 +35,20 @@
       "title": "Graduates’ Feedback",
       "description": "Hear what our successful graduates have to say about the courses and get valuable recommendations from them."
     }
+  },
+  
+    "TextReview": {
+      "subtitle": "What people say about us",
+      "title": "Our students' reviews",
+      "description": "Find out what our graduates say about their learning experience at our academy",
+      "leaveReviewButton": "Leave your review",
+      "modalTitle": "Leave a review",
+      "formNameLabel": "Your name",
+      "formNamePlaceholder": "Enter your name",
+      "formRatingLabel": "Your rating",
+      "formTextLabel": "Your review",
+      "formTextPlaceholder": "Tell us about your experience...",
+      "formSubmitButton": "Submit review"
+    
   }
 }

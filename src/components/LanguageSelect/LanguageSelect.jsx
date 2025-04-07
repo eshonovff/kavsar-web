@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Menu, MenuItem, IconButton, Typography, Avatar } from "@mui/material";
@@ -8,12 +8,11 @@ import russFlag from "/src/assets/russia.png";
 import engFlag from "/src/assets/united-kingdom.png";
 import { useDispatch } from "react-redux";
 
-import "./LanguageSelect.css"; // Add a CSS file for custom styles
-import { GetBanner, GetChooseUs, GetCourse, GetVideoReview } from "../../Api/bannerApi";
+import "./LanguageSelect.css";
+import { GetBanner, GetChooseUs, GetCourse, GetTextReview, GetVideoReview } from "../../Api/bannerApi";
 
 const LanguageSelect = () => {
   const dispatch = useDispatch();
-  const [flag, setFlag] = useState(russFlag);
   const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -21,17 +20,49 @@ const LanguageSelect = () => {
     { code: "ru", name: "Русский", nick: "Ru", flag: russFlag },
     { code: "tj", name: "Тоҷикӣ", nick: "Tj", flag: tajFlag },
     { code: "en", name: "English", nick: "En", flag: engFlag },
-  ];  
+  ];
+  
+  // Находим текущий флаг на основе текущего языка i18n
+  const getCurrentFlag = () => {
+    const currentLang = languages.find(lang => lang.code === i18n.language);
+    return currentLang ? currentLang.flag : russFlag;
+  };
+  
+  // Инициализируем состояние флага на основе текущего языка
+  const [flag, setFlag] = useState(getCurrentFlag());
+  
+  // Обновляем флаг при изменении языка i18n
+  useEffect(() => {
+    setFlag(getCurrentFlag());
+  }, [i18n.language]);
 
   const handleChangeLanguage = (lang) => {
     i18n.changeLanguage(lang.code);
+    localStorage.setItem('selectedLanguage', lang.code); // Сохраняем выбор в localStorage
     setFlag(lang.flag);
     setAnchorEl(null);
     dispatch(GetBanner(lang.nick));
     dispatch(GetChooseUs(lang.nick));
-     dispatch(GetCourse(lang.nick));
-     dispatch(GetVideoReview(lang.nick));
+    dispatch(GetCourse(lang.nick));
+    dispatch(GetVideoReview(lang.nick));
+    dispatch(GetTextReview(lang.nick));
   };
+  
+  // При первом рендере, проверяем наличие сохраненного языка
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    if (savedLanguage) {
+      const langObj = languages.find(lang => lang.code === savedLanguage);
+      if (langObj && i18n.language !== savedLanguage) {
+        i18n.changeLanguage(savedLanguage);
+        dispatch(GetBanner(langObj.nick));
+        dispatch(GetChooseUs(langObj.nick));
+        dispatch(GetCourse(langObj.nick));
+        dispatch(GetVideoReview(langObj.nick));
+        dispatch(GetTextReview(langObj.nick));
+      }
+    }
+  }, []);
 
   return (
     <div className="language-select-container backdrop-blur-2xl rounded-xl ">
@@ -43,8 +74,8 @@ const LanguageSelect = () => {
           gap: 1,
           padding: "8px 12px",
           borderRadius: "8px",
-          backdropFilter: "blur(16px)", // Add blur effect
-          backgroundColor: "rgba(255, 255, 255, 0.7)", // Semi-transparent white
+          backdropFilter: "blur(16px)",
+          backgroundColor: "rgba(255, 255, 255, 0.7)",
           boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
           "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.9)" },
           transition: "all 0.3s ease",

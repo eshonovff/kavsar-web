@@ -78,3 +78,42 @@ export const GetVideoReview = createAsyncThunk(
     }
   }
 );
+
+
+
+//  post Request 
+
+export const PostRequest = createAsyncThunk(
+  "BannerSlicer/PostRequest",
+  async(request)=>{
+    try {
+      const { data } = await axiosRequest.post(`api/Request`,request);
+      return data.data;
+    } catch (error) {
+      console.error(error);
+      
+    }
+  }
+)
+
+
+
+
+export const GetTextReview = createAsyncThunk(
+  "BannerSlicer/GetTextReview",
+  async (params = { lang: "Ru", pageSize: 100, pageIndex: 1 }) => {
+    try {
+      // Handle both object params and string-only params for backward compatibility
+      const language = typeof params === 'string' ? params : params.lang;
+      const pageSize = typeof params === 'string' ? 100 : (params.pageSize || 100);
+      const pageIndex = typeof params === 'string' ? 1 : (params.pageIndex || 1);
+      
+      const { data } = await axiosRequest.get(
+        `api/Feedback?language=${language}&pageSize=${pageSize}&pageIndex=${pageIndex}`
+      );
+      return data.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
