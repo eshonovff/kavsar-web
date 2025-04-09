@@ -13,6 +13,7 @@ import VideoReview from "../../components/VideoReview/VideoReview";
 import Request from "../../components/Request/Request";
 import TextReview from "../../components/VideoReview/TextReview";
 import Adress from "../../components/Adress/Adress";
+import { useScroll } from "../../hook/ScrollProvider";
 
 const Homeus = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const Homeus = () => {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const [videoPaused, setVideoPaused] = useState(true);
+  const { requestRef, scrollToSection } = useScroll();
 
   useEffect(() => {
     dispatch(GetGalerry());
@@ -242,6 +244,7 @@ const Homeus = () => {
               className="group"
             >
               <button
+               onClick={() => scrollToSection(requestRef)}
                 type="primary"
                 style={{
                   background: "linear-gradient(to right, #6366f1, #8b5cf6)",

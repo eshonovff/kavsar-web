@@ -10,3 +10,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  body{
+      color: rgb(42, 85, 85);
+  }

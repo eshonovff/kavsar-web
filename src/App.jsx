@@ -5,6 +5,8 @@ import About from "./page/About/About"
 import { Toaster } from "react-hot-toast"
 import News from "./page/News/News"
 import Courses from "./page/Courses/Courses"
+import { ScrollProvider } from "./hook/ScrollProvider"
+
 
 
 const App = () => {
@@ -31,10 +33,13 @@ const App = () => {
     ]
   }])
   return (
+    <ScrollProvider>
+
     <div className="min-w-[400px]">
        <Toaster/>
        <RouterProvider router={router}/> 
     </div>
+    </ScrollProvider>
   )
 }
 

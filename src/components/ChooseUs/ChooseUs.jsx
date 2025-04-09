@@ -2,11 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { GetChooseUs } from "../../Api/bannerApi";
+import { useScroll } from "../../hook/ScrollProvider";
 
 const ChooseUs = () => {
   const dispatch = useDispatch();
   const { choose } = useSelector((state) => state.BannerSlicer);
   const { t } = useTranslation();
+  const { requestRef, scrollToSection } = useScroll();
   
   useEffect(() => {
     dispatch(GetChooseUs());
@@ -28,14 +30,21 @@ const ChooseUs = () => {
         </h1>
         
         {needsSpecialLayout ? (
-          // Special layout for 4 or 5 items
+       
           <div className="flex flex-col gap-8">
             {/* Top row with always 3 items */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {choose.slice(0, 3)?.map((item, index) => (
-                <ModernCard3D key={item.id} item={item} index={index} />
-              ))}
-            </div>
+     
+<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+  {choose.slice(0, 3)?.map((item, index) => (
+    <ModernCard3D 
+      key={item.id} 
+      item={item} 
+      index={index} 
+      scrollToSection={scrollToSection}
+      requestRef={requestRef}
+    />
+  ))}
+</div>
             
             {/* Bottom row with remaining items (1 or 2), centered */}
             <div className="flex justify-center gap-8">
@@ -71,7 +80,7 @@ const ChooseUs = () => {
 };
 
 // Modern 3D Interactive Card Component
-const ModernCard3D = ({ item, index }) => {
+const ModernCard3D = ({ item, index, scrollToSection, requestRef }) => {
   const cardRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
@@ -162,25 +171,28 @@ const ModernCard3D = ({ item, index }) => {
         
         {/* Animated arrow */}
         <div className="flex justify-end mt-2">
-          <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center overflow-hidden group-hover:bg-blue-600 transition-colors duration-300">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </div>
-        </div>
+      <div 
+        onClick={() => scrollToSection(requestRef)}
+        className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center overflow-hidden group-hover:bg-blue-600 transition-colors duration-300 cursor-pointer"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </div>
+    </div>
         
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full -mr-10 -mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full -ml-8 -mb-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default ChooseUs;

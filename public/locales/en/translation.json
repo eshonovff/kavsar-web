@@ -33,22 +33,69 @@
     },
     "VideoReview": {
       "title": "Graduates’ Feedback",
-      "description": "Hear what our successful graduates have to say about the courses and get valuable recommendations from them."
+      "description": "Hear what our successful graduates have to say about the courses and get valuable recommendations from them.",
+      "Graduate": "Graduate"
     }
   },
-  
-    "TextReview": {
-      "subtitle": "What people say about us",
-      "title": "Our students' reviews",
-      "description": "Find out what our graduates say about their learning experience at our academy",
-      "leaveReviewButton": "Leave your review",
-      "modalTitle": "Leave a review",
-      "formNameLabel": "Your name",
-      "formNamePlaceholder": "Enter your name",
-      "formRatingLabel": "Your rating",
-      "formTextLabel": "Your review",
-      "formTextPlaceholder": "Tell us about your experience...",
-      "formSubmitButton": "Submit review"
-    
+
+  "TextReview": {
+    "subtitle": "What people say about us",
+    "title": "Our students' reviews",
+    "description": "Find out what our graduates say about their learning experience at our academy",
+    "leaveReviewButton": "Leave your review",
+    "modalTitle": "Leave a review",
+    "formNameLabel": "Your name",
+    "formNamePlaceholder": "Enter your name",
+    "formRatingLabel": "Your rating",
+    "formTextLabel": "Your review",
+    "formTextPlaceholder": "Tell us about your experience...",
+    "formSubmitButton": "Submit review"
+  },
+  "address": {
+    "title": "Contact Us",
+    "description": "We are always happy to see you in our office",
+    "contact": "Contact Information",
+    "telephone": "Phone",
+    "adres": "Address",
+    "place": "Dushanbe, Nemat Qarabaev Street, 29",
+    "button": "Contact",
+    "route": "Route",
+    "time": "Working Hours"
+  },
+  "footer": {
+    "description": "Modern educational platform with innovative courses for everyone.",
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+  "Request": {
+  "title": "Contact us",
+  "description": "Fill in the form below and we will contact you as soon as possible",
+  "form": {
+    "fullName": "First and last name",
+    "fullNamePlaceholder": "Enter your name",
+    "phone": "Phone number",
+    "email": "Email",
+    "source": "How did you hear about us?",
+    "sourceOptions": {
+      "instagram": "Instagram",
+      "friend": "From friends",
+      "website": "Website",
+      "banners": "Advertising banners",
+      "college": "College"
+    },
+    "message": "Message",
+    "messagePlaceholder": "Your message...",
+    "submit": "Send request",
+    "privacy": "By submitting the form, you agree to our",
+    "privacyLink": "privacy policy"
+  },
+  "contact": {
+    "title": "Contact us",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "addressValue": "Dushanbe, Nemat Qarabaev Street, 29"
   }
+}
 }

@@ -10,11 +10,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GetBanner } from '../../Api/bannerApi';
 import { Button } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { useScroll } from '../../hook/ScrollProvider';
 
 const Banner = () => {
   const dispatch = useDispatch();
   const { data: banners } = useSelector((state) => state.BannerSlicer);
   const { t } = useTranslation();
+    const { requestRef, scrollToSection } = useScroll();
   useEffect(() => {
     dispatch(GetBanner());
   }, [dispatch]);
@@ -73,6 +75,7 @@ const Banner = () => {
               
               <div className="group">
               <button 
+               onClick={() => scrollToSection(requestRef)}
                 type="primary"
                 style={{
                   background: "linear-gradient(to right, #6366f1, #8b5cf6)",
@@ -125,6 +128,7 @@ const Banner = () => {
                 }}
               >
                 <span  style={{ position: "relative", zIndex: 10, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+               
                   {t("banners.SignCourses")}
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
