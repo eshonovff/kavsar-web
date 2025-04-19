@@ -2,20 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Users, Award, Briefcase, Star, Code, Mail, Globe, Linkedin } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetGalerry } from '../../Api/bannerApi';
+import TeamSection from '../../components/TeamSection/TeamSection';
 
-// Пути к изображениям
-const MEDIA_PATHS = {
-  directorImages: [
-    '/images/team/director1.jpg',
-    '/images/team/director2.jpg',
-  ],
-  teamImages: [
-    '/images/team/teacher1.jpg',
-    '/images/team/teacher2.jpg',
-    '/images/team/teacher3.jpg',
-    '/images/team/teacher4.jpg',
-  ],
-};
 
 // Упрощенная карточка с 3D-эффектом
 const Card3D = ({ children, className }) => {
@@ -31,8 +19,11 @@ const Card3D = ({ children, className }) => {
 // Главный компонент страницы "О нас"
 const About = () => {
   const dispatch = useDispatch();
-  const { galerry, loading } = useSelector((state) => state.BannerSlicer);
+  const { galerry, loading, colleague } = useSelector((state) => state.BannerSlicer);
   const [videoUrl, setVideoUrl] = useState('');
+
+  console.log(colleague);
+  
   
   useEffect(() => {
     // Загружаем галерею
@@ -64,10 +55,20 @@ const About = () => {
             О нашей академии
           </h1>
           <div className="w-20 h-1 bg-gradient-to-r from-indigo-600 to-violet-600 mb-8"></div>
-          <p className="text-lg md:text-xl text-gray-700 max-w-3xl mb-12">
-            Мы создаем образовательное пространство, где каждый студент может раскрыть свой потенциал и достичь невероятных высот. 
-            Наша миссия — предоставить качественное образование, которое сочетает в себе теоретические знания и практические навыки.
-          </p>
+          <p className="text-lg md:text-xl text-gray-700  mb-12">
+  Мы создаём не просто курсы — мы формируем сообщество, где каждый может расти, развиваться и реализовывать свои мечты. 
+  Кавсар Академия — это территория возможностей, где обучение превращается в вдохновляющее путешествие. <br /><br />
+
+  Мы предлагаем курсы для всех возрастов и интересов: <strong>IT и программирование, медицинская подготовка, кулинария, иностранные языки, дошкольное развитие, автошкола, шитьё</strong> и многое другое. 
+  Здесь каждый находит то, что приближает его к цели. <br /><br />
+
+  Наши преподаватели — это не просто специалисты, а настоящие наставники, которые с душой делятся знаниями и поддерживают на каждом шаге. 
+  Современные методики, практика с первого дня и индивидуальный подход делают обучение у нас результативным и вдохновляющим. <br /><br />
+
+  📚 Учитесь с комфортом, 🌍 развивайтесь без границ и ✨ стройте своё будущее вместе с нами!  
+  <strong>Кавсар Академия — там, где начинается твой успех.</strong>
+</p>
+
         </div>
       </section>
       
@@ -105,6 +106,10 @@ const About = () => {
     </div>
   </div>
 </section>
+
+
+
+
       
       {/* Раздел достижений */}
       <section className="py-20 relative">
@@ -118,10 +123,10 @@ const About = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: <Users className="w-10 h-10" />, number: "5000+", text: "Выпускников" },
-              { icon: <Award className="w-10 h-10" />, number: "50+", text: "Образовательных программ" },
+              { icon: <Users className="w-10 h-10" />, number: "500+", text: "Выпускников" },
+              { icon: <Award className="w-10 h-10" />, number: "20+", text: "Образовательных программ" },
               { icon: <Award className="w-10 h-10" />, number: "95%", text: "Рекомендуют нас" },
-              { icon: <Award className="w-10 h-10" />, number: "10", text: "Лет опыта" }
+              { icon: <Award className="w-10 h-10" />, number: "3+", text: "Лет опыта" }
             ].map((achievement, index) => (
               <Card3D key={index} className="bg-white/80 backdrop-blur-md rounded-2xl p-8 flex flex-col items-center text-center">
                 <div className="w-16 h-16 rounded-full flex items-center justify-center bg-indigo-100 text-indigo-600 mb-4">
@@ -137,183 +142,100 @@ const About = () => {
         </div>
       </section>
       
-      {/* Раздел команды */}
-     {/* Раздел команды - улучшенный */}
-<section className="py-20 relative">
-  <div className="container mx-auto px-4 max-w-6xl">
-    <div className="text-center mb-16">
-      <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
-        Дастаи мо
-      </h2>
-      <div className="w-20 h-1 bg-gradient-to-r from-indigo-600 to-violet-600 mb-6 mx-auto"></div>
-    </div>
-    
-    {/* Директора */}
-    <div className="mb-16">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-          <Briefcase className="w-5 h-5 text-indigo-600" />
-        </div>
-        <h3 className="text-2xl font-semibold text-gray-800">Руководство</h3>
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {[
-          {
-            name: "Сулаймонов Нурулло",
-            position: "Мудирис ва роҳбари Softclub",
-            description: "Мо ҳудро ба ҳар як барномасози хоҳишманд ва ва ҳар одаме, ки то адои натиҷа омода аст, мебахшем",
-            image: MEDIA_PATHS.directorImages[0]
-          },
-          {
-            name: "Кабиров Зоирҷон",
-            position: "Ҳимматгузори Softclub BIO",
-            description: "Моҳои қудрати технологияи боварӣ дорем ва кушиш мекунем, ки бозори суруҷо ва вокеият мезофазӣ дар-небошад.",
-            image: MEDIA_PATHS.directorImages[1]
-          }
-        ].map((director, index) => (
-          <div key={index} className="group relative">
-            <div className="relative z-10 rounded-2xl bg-white/90 backdrop-blur-md p-6 shadow-xl transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-2 overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-indigo-600/10 blur-xl"></div>
-              <div className="absolute -bottom-10 -left-10 w-24 h-24 rounded-full bg-pink-600/10 blur-xl"></div>
-              
-              <div className="flex flex-col md:flex-row items-center md:items-start">
-                <div className="md:w-2/5 mb-6 md:mb-0">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full blur-sm opacity-70 transform scale-105"></div>
-                    <div className="w-32 h-32 rounded-full overflow-hidden relative z-10 border-4 border-white">
-                      <img 
-                        src={director.image} 
-                        alt={director.name}
-                        className="w-full h-full object-cover" 
-                      />
-                    </div>
-                    <div className="absolute -right-2 bottom-0 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-full p-2 z-20 shadow-lg">
-                      <Star className="w-5 h-5 text-white" />
-                    </div>
-                  </div>
-                </div>
-                <div className="md:w-3/5 md:pl-6 text-center md:text-left">
-                  <h4 className="text-2xl font-bold mb-2 text-gray-900">{director.name}</h4>
-                  <p className="text-indigo-600 font-medium mb-4">{director.position}</p>
-                  <p className="text-gray-700 mb-5">{director.description}</p>
-                  <div className="flex justify-center md:justify-start space-x-3">
-                    <a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors">
-                      <Mail className="w-5 h-5" />
-                    </a>
-                    <a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors">
-                      <Linkedin className="w-5 h-5" />
-                    </a>
-                    <a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors">
-                      <Globe className="w-5 h-5" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-    
-    {/* Преподаватели */}
-    <div>
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-          <Users className="w-5 h-5 text-indigo-600" />
-        </div>
-        <h3 className="text-2xl font-semibold text-gray-800">Муаллимони мо</h3>
-      </div>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { 
-            name: "Салимзода Абдурахим", 
-            position: "UX/UI дизайнер", 
-            image: MEDIA_PATHS.teamImages[0],
-            skills: ["UI/UX", "Figma", "Adobe XD"],
-            techIcons: ["/images/icons/figma.svg", "/images/icons/adobe-xd.svg"]
-          },
-          { 
-            name: "Манонзода Аличон", 
-            position: "Инженер .NET", 
-            image: MEDIA_PATHS.teamImages[1],
-            skills: [".NET", "C#", "Azure"],
-            techIcons: ["/images/icons/dotnet.svg", "/images/icons/csharp.svg"]
-          },
-          { 
-            name: "Начибуллох Шамсудинов", 
-            position: "Front-end разработчик", 
-            image: MEDIA_PATHS.teamImages[2],
-            skills: ["JavaScript", "React", "TypeScript"],
-            techIcons: ["/images/icons/javascript.svg", "/images/icons/react.svg"]
-          },
-          { 
-            name: "Бахтовар Рахмонов", 
-            position: "Python разработчик", 
-            image: MEDIA_PATHS.teamImages[3],
-            skills: ["Python", "Django", "FastAPI"],
-            techIcons: ["/images/icons/python.svg", "/images/icons/django.svg"]
-          }
-        ].map((member, index) => (
-          <div key={index} className="group relative">
-            <div className="relative z-10 rounded-2xl bg-white/90 backdrop-blur-md p-6 shadow-xl transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-2 overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-indigo-600/10 blur-xl"></div>
-              <div className="absolute -bottom-10 -left-10 w-24 h-24 rounded-full bg-pink-600/10 blur-xl"></div>
-              
-              <div className="flex flex-col items-center text-center">
-                <div className="mb-5 relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full blur-sm opacity-70 transform scale-105"></div>
-                  <div className="w-28 h-28 rounded-full overflow-hidden relative z-10 border-4 border-white">
-                    <img 
-                      src={member.image} 
-                      alt={member.name}
-                      className="w-full h-full object-cover" 
-                    />
-                  </div>
-                </div>
-                
-                <h4 className="text-xl font-bold mb-1 text-gray-900">{member.name}</h4>
-                <p className="text-indigo-600 font-medium mb-4">{member.position}</p>
-                
-                {member.skills && (
-                  <div className="flex flex-wrap justify-center gap-2 mb-5">
-                    {member.skills.map((skill, idx) => (
-                      <span key={idx} className="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                
-                <div className="flex justify-center space-x-3">
-                  <a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors">
-                    <Code className="w-4 h-4" />
-                  </a>
-                  <a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors">
-                    <Linkedin className="w-4 h-4" />
-                  </a>
-                </div>
-              </div>
-            </div>
-            
-            {member.techIcons && (
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 flex justify-center gap-1">
-                {member.techIcons.map((icon, idx) => (
-                  <div key={idx} className="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center">
-                    <img src={icon} alt="tech" className="w-5 h-5" />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-</section>
+
+
+
+
+
+          {/* Раздел команда  */}
+
+
+     
+          <TeamSection />
+
+
+
+
+
     </div>
   );
 };
 
 export default About;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useEffect, useState } from 'react'
+// import { Link } from 'react-router-dom'
+
+// const About = () => {
+//   const [isLoading, setIsLoading] = useState(true)
+
+//   useEffect(() => {
+//     // Имитация загрузки данных
+//     const timer = setTimeout(() => {
+//       setIsLoading(false)
+//     }, 2000)
+    
+//     return () => clearTimeout(timer)
+//   }, [])
+
+//   return (
+//     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+//       {isLoading ? (
+//         <div className="text-center">
+//           <div className="flex justify-center">
+//             <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+//           </div>
+//           <p className="mt-4 text-xl font-medium text-gray-700">Дар рафти коркард қарор дорад...</p>
+//         </div>
+//       ) : (
+//         <div className="max-w-2xl w-full bg-white shadow-lg rounded-lg p-8 transform transition-all duration-500 ease-in-out animate-fadeIn">
+//           <h1 className="text-3xl font-bold text-gray-800 mb-6 animate-bounce">Дар бораи мо</h1>
+//           <div className="space-y-4">
+//             <p className="text-lg text-gray-600 animate-pulse">
+//               Саҳифа дар рафти коркард қарор дорад. Ба зудӣ маълумоти муфассал дар ин ҷо ҷойгир карда мешавад.
+//             </p>
+//             <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+//             <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+//             <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+//           </div>
+//           <div className="mt-8 flex justify-center">
+//             <Link to={"/"} >
+//             <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105">
+//               Баргаштан ба саҳифаи асосӣ
+//             </button>
+//             </Link>
+//           </div>
+//         </div>
+//       )}
+      
+//       {/* CSS для создания пользовательской анимации fadeIn */}
+//       <style jsx>{`
+//         @keyframes fadeIn {
+//           0% { opacity: 0; transform: translateY(20px); }
+//           100% { opacity: 1; transform: translateY(0); }
+//         }
+//         .animate-fadeIn {
+//           animation: fadeIn 1s ease-out forwards;
+//         }
+//       `}</style>
+//     </div>
+//   )
+// }
+
+// export default About

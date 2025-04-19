@@ -3,7 +3,8 @@
     "home": "Home",
     "news": "News",
     "aboutUs": "About us",
-    "courses": "Courses"
+    "courses": "Courses",
+    "library": "Library"
   },
   "banners": {
     "SignCourses": "Sign up for courses"
@@ -24,7 +25,8 @@
       "description": "Our courses offer a wide range of knowledge and professional skills. You can gain not only education but also abilities that will help you on your path to success.",
       "button": "More about courses",
       "showmore": "Show more",
-      "hide": "Hide"
+      "hide": "Hide",
+      "materials": "Course materials"
     },
 
     "section": {
@@ -46,10 +48,14 @@
     "modalTitle": "Leave a review",
     "formNameLabel": "Your name",
     "formNamePlaceholder": "Enter your name",
+    "formNameError": "Please enter your name",
     "formRatingLabel": "Your rating",
     "formTextLabel": "Your review",
     "formTextPlaceholder": "Tell us about your experience...",
-    "formSubmitButton": "Submit review"
+    "formTextError": "Please write a review",
+    "formSubmitButton": "Submit review",
+    "reviewSubmitted": "Your review has been submitted successfully!",
+    "reviewError": "Error submitting review. Please try again later."
   },
   "address": {
     "title": "Contact Us",
@@ -68,34 +74,134 @@
     "contact": "Contact",
     "rights": "All rights reserved."
   },
+
   "Request": {
-  "title": "Contact us",
-  "description": "Fill in the form below and we will contact you as soon as possible",
-  "form": {
-    "fullName": "First and last name",
-    "fullNamePlaceholder": "Enter your name",
-    "phone": "Phone number",
-    "email": "Email",
-    "source": "How did you hear about us?",
-    "sourceOptions": {
-      "instagram": "Instagram",
-      "friend": "From friends",
-      "website": "Website",
-      "banners": "Advertising banners",
-      "college": "College"
-    },
-    "message": "Message",
-    "messagePlaceholder": "Your message...",
-    "submit": "Send request",
-    "privacy": "By submitting the form, you agree to our",
-    "privacyLink": "privacy policy"
-  },
-  "contact": {
     "title": "Contact us",
-    "phone": "Phone",
-    "email": "Email",
-    "address": "Address",
-    "addressValue": "Dushanbe, Nemat Qarabaev Street, 29"
+    "description": "Fill in the form below and we will contact you as soon as possible",
+    "form": {
+      "fullName": "First and last name",
+      "fullNamePlaceholder": "Enter your name",
+      "phone": "Phone number",
+      "email": "Email",
+      "source": "How did you hear about us?",
+      "sourceOptions": {
+        "instagram": "Instagram",
+        "friend": "From friends",
+        "website": "Website",
+        "banners": "Advertising banners",
+        "college": "College"
+      },
+      "message": "Message",
+      "messagePlaceholder": "Your message...",
+      "submit": "Send request",
+      "privacy": "By submitting the form, you agree to our",
+      "privacyLink": "privacy policy"
+    },
+    "contact": {
+      "title": "Contact us",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "addressValue": "Dushanbe, Nemat Qarabaev Street, 29"
+    }
+  },
+
+  "EnrollNow": "Enroll now",
+  "FillFormToEnroll": "Fill in the form to enroll in the course",
+  "InterestedInCourse": "Interested in the course",
+  "SubmitApplication": "Submit application",
+  "FormSubmittedSuccessfully": "Your application has been successfully submitted!",
+  "RequestSubmitted": "Request submitted successfully!",
+  "RequestError": "Error submitting request. Please try again later.",
+  "ExperiencedInstructor": "Experienced Instructor",
+  "CourseInstructor": "Course Instructor",
+  "Details": "Details",
+  "Home": "Home",
+  "Courses": "Courses",
+  "OtherCourses": "Other Courses",
+  "Curriculum": "Curriculum",
+  "Instructor": "Instructor",
+  "Description": "Description",
+  "CourseCurriculum": "Course Curriculum",
+  "MeetInstructor": "Meet the Instructor",
+  "TryDemoLesson": "Try Demo Lesson",
+  "Free": "Free",
+  "Duration": "Duration",
+  "Level": "Level",
+  "AllLevels": "All Levels",
+  "Students": "Students",
+  "LastUpdated": "Last Updated",
+  "Materials": "Materials",
+  "months": "months",
+  "Flexible": "Flexible",
+  "Coming Soon": "Coming Soon",
+  "AboutCourse": "About the Course",
+  "WhatYouWillLearn": "What You Will Learn",
+  "Requirements": "Requirements",
+  "RequirementBasic": "Basic knowledge of the subject",
+  "RequirementInternet": "Internet access",
+  "RequirementComputer": "A computer or mobile device",
+  "WhoThisCourseIsFor": "Who This Course Is For",
+  "ForBeginner": "Beginners who want to start learning the subject",
+  "ForStudent": "Students looking to improve their skills",
+  "ForProfessional": "Professionals wanting to refresh their knowledge",
+  "notFound": {
+    "title": "Page Not Found",
+    "message": "Sorry, the page you are looking for doesn't exist or has been moved.",
+    "backToHome": "Back to Home"
+  },
+  "CourseDescriptionFallback": "Our academy offers this course to help you acquire not only theoretical knowledge but also practical skills. The program is developed by experienced teachers and adapted for students with different levels of preparation — from beginners to advanced. Modern teaching methods and an individual approach to each student ensure high learning efficiency and consistent progress.",
+  "news": {
+    "allCategories": "All",
+    "backToList": "Back to news list",
+    "author": "Author",
+    "ourCourses": "Our Courses",
+    "newsTitle": "News end",
+    "events": "events",
+    "stayUpdated": "Stay updated with the latest news, events, and achievements of our company",
+    "searchPlaceholder": "Search news...",
+    "filters": "Filters",
+    "search": "Search",
+    "readMore": "Read More",
+    "noNewsFound": "No news found",
+    "changeFilters": "Try changing your filter parameters",
+    "previous": "Previous",
+    "next": "Next",
+    "subscribe": "Subscribe to our newsletter",
+    "subscribeDescription": "Get the latest news and special offers directly to your email",
+    "yourEmail": "Your email",
+    "subscribeButton": "Subscribe"
+  },
+  "library": {
+    "title": "Library Under Construction",
+    "description": "Our library is currently under development. We are preparing the best new services for you.",
+    "openingSoon": "Opening Soon",
+    "progress": "70% completed"
+  },
+  "courses": {
+    "hero": {
+      "our": "Our",
+      "educationalCourses": "educational courses",
+      "description": "Choose the right course and start your journey to new knowledge and skills with us."
+    },
+    "filters": {
+      "categories": "Categories",
+      "allCategories": "All",
+      "level": "Level",
+      "allLevels": "All levels"
+    },
+    "search": {
+      "placeholder": "Search courses..."
+    },
+    "card": {
+      "defaultCategory": "Course",
+      "currency": "somoni",
+      "free": "Free",
+      "details": "More details"
+    },
+    "empty": {
+      "title": "No courses found",
+      "description": "Try changing your filter or search parameters"
+    }
   }
-}
 }

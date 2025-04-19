@@ -2,17 +2,66 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetCourse } from '../../Api/bannerApi';
+import { Link } from 'react-router-dom';
+
+// Компонент рейтинга в виде плашки с звездой
+const RatingBadge = ({ rating }) => {
+  return (
+    <div className="flex items-center bg-yellow-400 text-white px-3 py-1 rounded-md font-semibold">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        className="h-5 w-5 mr-1"
+        viewBox="0 0 20 20" 
+        fill="currentColor"
+      >
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.799-2.034c-.784-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+      </svg>
+      {rating.toFixed(1)}
+    </div>
+  );
+};
+
+// Компонент тега материала
+const MaterialTag = ({ text }) => {
+  return (
+    <div className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-md text-sm font-medium inline-block mb-2 mr-2">
+      {text}
+    </div>
+  );
+};
+
+// Функция для обрезки текста до 160 символов
+const truncateText = (text, maxLength = 160) => {
+  if (!text) return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + '...';
+};
 
 const Course = () => {
   const dispatch = useDispatch();
-  const { course } = useSelector((state) => state.BannerSlicer);
   const { t, i18n } = useTranslation();
   const [showAll, setShowAll] = useState(false);
+  const { course } = useSelector((state) => state.BannerSlicer);
+  
   const isRTL = i18n.dir() === 'rtl';
+  // Генерируем случайные рейтинги для каждого курса
   
   useEffect(() => {
     dispatch(GetCourse());
   }, [dispatch]);
+  
+  const [courseRatings, setCourseRatings] = useState({});
+  // Генерируем рейтинги при изменении списка курсов
+  useEffect(() => {
+    if (course && course.length > 0) {
+      const ratings = {};
+      course.forEach(item => {
+        // Генерируем случайный рейтинг от 4.5 до 5.0
+        ratings[item.id] = 4.5 + Math.random() * 0.5;
+      });
+      setCourseRatings(ratings);
+    }
+  }, [course]);
 
   const toggleShowAll = () => {
     setShowAll(prevState => !prevState);
@@ -77,14 +126,36 @@ const Course = () => {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
                   />
+                  
+                  {/* Рейтинг курса (в правом нижнем углу изображения) */}
+                  <div className="absolute bottom-2 right-2 z-20">
+                    <RatingBadge rating={courseRatings[item.id] || 4.9} />
+                  </div>
                 </div>
                 
                 {/* Content container with standard height */}
                 <div className="relative z-10 p-4 sm:p-5 flex-grow">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2 sm:mb-3">{item.name}</h3>
-                  <p className="text-gray-600 text-sm mb-16 line-clamp-3">{item.description}</p>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3">{item.name}</h3>
+                  
+                  {/* Ограничиваем описание курса до 160 символов */}
+                  <p className="text-gray-600 text-sm mb-3">{truncateText(item.description, 100)}</p>
+                  
+                  {/* Материалы курса в виде тегов */}
+                  {item.materials && item.materials.length > 0 && (
+                    <div className="mb-16 flex flex-wrap">
+                      {item.materials.slice(0, 2).map((material, index) => (
+                        <MaterialTag key={index} text={material} />
+                      ))}
+                      {item.materials.length > 2 && (
+                        <div className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-md text-sm font-medium inline-block mb-2 mr-2">
+                          +{item.materials.length - 2}
+                        </div>
+                      )}
+                    </div>
+                  )}
                   
                   {/* Bottom positioned button */}
+                  <Link to={`/course/${item.id}`}>
                   <div className="absolute bottom-5 left-4 sm:left-5 right-4 sm:right-5">
                     <div className="group/btn">
                       <button 
@@ -171,6 +242,7 @@ const Course = () => {
                       </button>
                     </div>
                   </div>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/IMG_0318.png";
 import { Button } from "antd";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import { useScroll } from "../hook/ScrollProvider";
 const Layout = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -29,17 +30,28 @@ const Layout = () => {
     color: "white",
   };
 
+  // Функция для обработки нажатия на кнопку записи
+  const handleRequestButtonClick = () => {
+    // Если мы на главной странице (pathname равен '/'), то выполняем скролл
+    if (location.pathname === '/') {
+      scrollToSection(requestRef);
+    } else {
+      // Иначе переходим на новую страницу
+      navigate('/requstorInstagram');
+    }
+  };
+
   // Update window width state on resize
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
-
+    window.scrollTo(0, 0);
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [location.pathname]);
 
   // Toggle mobile menu
   const toggleMobileMenu = () => {
@@ -61,7 +73,7 @@ const Layout = () => {
               <div className="flex justify-between items-center mt-2">
                 <button
                   type="button"
-                  onClick={() => scrollToSection(requestRef)}
+                  onClick={handleRequestButtonClick}
                   className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg shadow-md font-medium text-sm flex items-center"
                 >
                   {t("banners.SignCourses")}
@@ -80,7 +92,7 @@ const Layout = () => {
                 </button>
                 <button
                   onClick={toggleMobileMenu}
-                  className="text-indigo-600 focus:outline-none"
+                  className="text-indigo-600 focus:outline-none ml-2"
                 >
                   {mobileMenuOpen ? (
                     <svg
@@ -123,7 +135,7 @@ const Layout = () => {
                 mobileMenuOpen ? "block" : "hidden"
               }`}
             >
-              <div className="flex justify-between">
+              <div className="grid grid-cols-4 gap-1">
                 <Link to={"/"} className="flex-1">
                   <Button
                     type="text"
@@ -204,6 +216,33 @@ const Layout = () => {
                   </Button>
                 </Link>
 
+                <Link to={"/library"} className="flex-1">
+                  <Button
+                    type="text"
+                    block
+                    style={{
+                      fontWeight: 500,
+                      margin: "4px 2px",
+                      ...(isActive("/library") ? activeStyle : {}),
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 mb-1"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                    </svg>
+                    <span className="block text-xs">{t("navbar.library")}</span>
+                  </Button>
+                </Link>
+              </div>
+              
+              <div className="grid grid-cols-1">
                 <Link to={"/about"} className="flex-1">
                   <Button
                     type="text"
@@ -232,7 +271,8 @@ const Layout = () => {
                     <span className="block text-xs">{t("navbar.aboutUs")}</span>
                   </Button>
                 </Link>
-                <div className="flex justify-between items-center mt-2">
+                
+                <div className="flex justify-center items-center mt-2">
                   <LanguageSelect />
                 </div>
               </div>
@@ -242,7 +282,7 @@ const Layout = () => {
       );
     }
 
-    // Medium screens (701px - 1000px)
+    // Medium screens (701px - 1150px)
     else if (windowWidth >= 701 && windowWidth <= 1150) {
       return (
         <header className="sticky top-0 z-50 backdrop-blur-xl shadow-md py-2 px-4">
@@ -255,7 +295,7 @@ const Layout = () => {
                 <LanguageSelect />
 
                 <button
-                onClick={() => scrollToSection(requestRef)}
+                  onClick={handleRequestButtonClick}
                   type="button"
                   className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 rounded-lg shadow-md font-medium text-sm flex items-center"
                 >
@@ -361,6 +401,21 @@ const Layout = () => {
                       }}
                     >
                       {t("navbar.news")}
+                    </Button>
+                  </Link>
+
+                  <Link to={"/library"}>
+                    <Button
+                      type="text"
+                      style={{
+                        fontWeight: 500,
+                        fontSize: "14px",
+                        margin: "4px 0",
+                        transition: "all 0.3s",
+                        ...(isActive("/library") ? activeStyle : {}),
+                      }}
+                    >
+                      {t("navbar.library")}
                     </Button>
                   </Link>
 
@@ -482,6 +537,34 @@ const Layout = () => {
                   {t("navbar.news")}
                 </Button>
               </Link>
+              <Link to={"/library"}>
+                <Button
+                  type="text"
+                  style={{
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    margin: "8px 0",
+                    transition: "all 0.3s",
+                    ...(isActive("/library") ? activeStyle : {}),
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background =
+                      "linear-gradient(to top, rgba(49, 46, 129, 0.6), rgba(88, 28, 135, 0.6))";
+                    e.currentTarget.style.color = "white";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive("/library")) {
+                      e.currentTarget.style.background = "";
+                      e.currentTarget.style.color = "";
+                    } else {
+                      e.currentTarget.style.background = activeStyle.background;
+                      e.currentTarget.style.color = activeStyle.color;
+                    }
+                  }}
+                >
+                  {t("navbar.library")}
+                </Button>
+              </Link>
 
               <Link to={"/about"}>
                 <Button
@@ -519,7 +602,7 @@ const Layout = () => {
               <div className="group ml-2">
                 <button
                   type="button"
-                  onClick={() => scrollToSection(requestRef)}
+                  onClick={handleRequestButtonClick}
                   style={{
                     background: "linear-gradient(to right, #6366f1, #8b5cf6)",
                     color: "white",
@@ -641,7 +724,7 @@ const Layout = () => {
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                 </svg>
               </div>
               <span
@@ -723,37 +806,33 @@ const Layout = () => {
             </Link>
 
             <Link
-              to={"/about"}
+              to={"/library"}
               className="flex-1 py-2 flex flex-col items-center"
             >
               <div
                 className={`p-1 rounded-full ${
-                  isActive("/about") ? "bg-indigo-100" : ""
+                  isActive("/library") ? "bg-indigo-100" : ""
                 }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className={`h-6 w-6 ${
-                    isActive("/about") ? "text-indigo-600" : "text-gray-500"
+                    isActive("/library") ? "text-indigo-600" : "text-gray-500"
                   }`}
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clipRule="evenodd"
-                  />
+                  <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
                 </svg>
               </div>
               <span
                 className={`text-xs ${
-                  isActive("/about")
+                  isActive("/library")
                     ? "text-indigo-600 font-medium"
                     : "text-gray-500"
                 }`}
               >
-                {t("navbar.aboutUs")}
+                {t("navbar.library")}
               </span>
             </Link>
           </div>
@@ -816,6 +895,14 @@ const Layout = () => {
                     className="text-indigo-200 hover:text-white transition-colors"
                   >
                     {t("navbar.news")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/library"
+                    className="text-indigo-200 hover:text-white transition-colors"
+                  >
+                    {t("navbar.library")}
                   </Link>
                 </li>
                 <li>

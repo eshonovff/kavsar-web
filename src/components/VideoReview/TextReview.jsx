@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetTextReview } from '../../Api/bannerApi';
+import { GetTextReview, postTextReview } from '../../Api/bannerApi'; // Добавлен импорт postTextReview
 
 // Компонент рейтинга со звездами
 const StarRating = ({ rating }) => {
@@ -26,12 +26,14 @@ const StarRating = ({ rating }) => {
 
 // Компонент модального окна для добавления отзыва
 const FeedbackModal = ({ isOpen, onClose }) => {
-  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     fullName: '',
     text: '',
     grade: 5
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +41,14 @@ const FeedbackModal = ({ isOpen, onClose }) => {
       ...formData,
       [name]: value
     });
+    
+    // Очищаем ошибку для поля при его изменении
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
   };
 
   const handleRatingChange = (rating) => {
@@ -48,11 +58,61 @@ const FeedbackModal = ({ isOpen, onClose }) => {
     });
   };
   
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = t('TextReview.formNameError') || 'Пожалуйста, введите ваше имя';
+    }
+    
+    if (!formData.text.trim()) {
+      newErrors.text = t('TextReview.formTextError') || 'Пожалуйста, напишите отзыв';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Здесь будет логика отправки отзыва на бэкенд
-    console.log('Отправка отзыва:', formData);
-    // После успешной отправки
+    
+    // Проверяем валидность формы
+    if (!validateForm()) {
+      return;
+    }
+    
+    // Получаем текущий язык
+    const currentLang = i18n.language || 'ru';
+    
+    // Создаем объект с данными для отправки
+    const reviewData = {
+      textTj: formData.text, 
+      textRu: "",
+      textEn: "",
+      grade: formData.grade,
+      fullName: formData.fullName,
+      approved: false
+    };
+    
+    // Заполняем поле текста в зависимости от текущего языка
+    if (currentLang === 'tj') {
+      reviewData.textTj = formData.text;
+    } else if (currentLang === 'en') {
+      reviewData.textEn = formData.text;
+    } else {
+      // По умолчанию русский
+      reviewData.textRu = formData.text;
+    }
+    
+    // Отправляем данные
+    dispatch(postTextReview(reviewData));
+    
+    // Закрываем модальное окно и сбрасываем форму
+    setFormData({
+      fullName: '',
+      text: '',
+      grade: 5
+    });
     onClose();
   };
 
@@ -87,10 +147,12 @@ const FeedbackModal = ({ isOpen, onClose }) => {
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              className={`w-full px-4 py-2.5 bg-gray-50 border ${errors.fullName ? 'border-red-500' : 'border-gray-200'} rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all`}
               placeholder={t('TextReview.formNamePlaceholder') || 'Введите ваше имя'}
-              required
             />
+            {errors.fullName && (
+              <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+            )}
           </div>
           
           <div className="space-y-2">
@@ -128,10 +190,12 @@ const FeedbackModal = ({ isOpen, onClose }) => {
               value={formData.text}
               onChange={handleChange}
               rows="4"
-              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
+              className={`w-full px-4 py-2.5 bg-gray-50 border ${errors.text ? 'border-red-500' : 'border-gray-200'} rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none`}
               placeholder={t('TextReview.formTextPlaceholder') || 'Расскажите о вашем опыте...'}
-              required
             ></textarea>
+            {errors.text && (
+              <p className="text-red-500 text-sm mt-1">{errors.text}</p>
+            )}
           </div>
           
           <div className="pt-4">
@@ -273,9 +337,7 @@ const TextReview = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-sm font-semibold text-blue-600 tracking-wider uppercase mb-2 inline-block">
-            {t('TextReview.subtitle') || 'Что о нас говорят'}
-          </span>
+        
           <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700 inline-block mb-4">
             {t('TextReview.title') || 'Отзывы наших учеников'}
           </h2>

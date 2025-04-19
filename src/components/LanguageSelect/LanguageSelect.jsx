@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Menu, MenuItem, IconButton, Typography, Avatar } from "@mui/material";
+import { Menu, MenuItem, IconButton, Typography, Avatar, CircularProgress } from "@mui/material";
 
 import tajFlag from "/src/assets/tajikistan.png";
 import russFlag from "/src/assets/russia.png";
@@ -9,12 +9,13 @@ import engFlag from "/src/assets/united-kingdom.png";
 import { useDispatch } from "react-redux";
 
 import "./LanguageSelect.css";
-import { GetBanner, GetChooseUs, GetCourse, GetTextReview, GetVideoReview } from "../../Api/bannerApi";
+import { GetBanner, GetChooseUs, GetColleague, GetCourse, GetCourseById, GetNews, GetTextReview, GetVideoReview } from "../../Api/bannerApi";
 
 const LanguageSelect = () => {
   const dispatch = useDispatch();
   const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const languages = [
     { code: "ru", name: "Русский", nick: "Ru", flag: russFlag },
@@ -36,16 +37,31 @@ const LanguageSelect = () => {
     setFlag(getCurrentFlag());
   }, [i18n.language]);
 
-  const handleChangeLanguage = (lang) => {
-    i18n.changeLanguage(lang.code);
-    localStorage.setItem('selectedLanguage', lang.code); // Сохраняем выбор в localStorage
-    setFlag(lang.flag);
+  const handleChangeLanguage = async (lang) => {
+    setIsLoading(true);
     setAnchorEl(null);
-    dispatch(GetBanner(lang.nick));
-    dispatch(GetChooseUs(lang.nick));
-    dispatch(GetCourse(lang.nick));
-    dispatch(GetVideoReview(lang.nick));
-    dispatch(GetTextReview(lang.nick));
+    
+    // Сохраняем выбор в localStorage
+    localStorage.setItem('selectedLanguage', lang.code);
+    
+    // Добавляем задержку перед сменой языка (около 2 секунд)
+    setTimeout(() => {
+      i18n.changeLanguage(lang.code);
+      setFlag(lang.flag);
+      
+      // Делаем API-запросы для обновления данных
+      dispatch(GetBanner(lang.nick));
+      dispatch(GetChooseUs(lang.nick));
+      dispatch(GetCourse(lang.nick));
+      dispatch(GetVideoReview(lang.nick));
+      dispatch(GetTextReview(lang.nick));
+      dispatch(GetCourseById(lang.nick));
+      dispatch(GetNews(lang.nick));
+      dispatch(GetColleague(lang.nick));
+      
+      // Выключаем состояние загрузки
+      setIsLoading(false);
+    }, 2000);
   };
   
   // При первом рендере, проверяем наличие сохраненного языка
@@ -60,14 +76,18 @@ const LanguageSelect = () => {
         dispatch(GetCourse(langObj.nick));
         dispatch(GetVideoReview(langObj.nick));
         dispatch(GetTextReview(langObj.nick));
+        dispatch(GetCourseById(langObj.nick));
+        dispatch(GetNews(langObj.nick));
+        dispatch(GetColleague(langObj.nick));
       }
     }
   }, []);
 
   return (
-    <div className="language-select-container backdrop-blur-2xl rounded-xl ">
+    <div className="language-select-container backdrop-blur-2xl rounded-xl">
       <IconButton
-        onClick={(e) => setAnchorEl(e.currentTarget)}
+        onClick={(e) => !isLoading && setAnchorEl(e.currentTarget)}
+        disabled={isLoading}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -79,13 +99,21 @@ const LanguageSelect = () => {
           boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
           "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.9)" },
           transition: "all 0.3s ease",
+          minWidth: "80px",
+          justifyContent: "center",
         }}
       >
-        <Avatar src={flag} sx={{ width: 24, height: 24 }} />
-        <Typography fontSize={14} fontWeight={500}>
-          {languages.find((lang) => lang.flag === flag)?.nick}
-        </Typography>
-        <ExpandMoreIcon fontSize="small" />
+        {isLoading ? (
+          <CircularProgress size={20} color="primary" />
+        ) : (
+          <>
+            <Avatar src={flag} sx={{ width: 24, height: 24 }} />
+            <Typography fontSize={14} fontWeight={500}>
+              {languages.find((lang) => lang.flag === flag)?.nick}
+            </Typography>
+            <ExpandMoreIcon fontSize="small" />
+          </>
+        )}
       </IconButton>
 
       <Menu

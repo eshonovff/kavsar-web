@@ -1,0 +1,289 @@
+/* NotFound.css */
+
+/* Анимированные цифры 404 */
+.animated-404-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .animated-number-wrapper {
+    position: relative;
+    width: 8rem;
+    height: 10rem;
+  }
+  
+  .animated-number-bg {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.7) 0%, rgba(124, 58, 237, 0.7) 100%);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.3);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .animated-number-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    z-index: 1;
+  }
+  
+  .animated-number {
+    font-size: 6rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.1s ease-in-out;
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* Анимация шестеренок */
+  .gear {
+    position: absolute;
+    border-radius: 50%;
+    border: 4px dashed rgba(255, 255, 255, 0.5);
+    animation: spin 8s linear infinite;
+    z-index: 0;
+  }
+  
+  .gear-large {
+    width: 5rem;
+    height: 5rem;
+    top: -1.5rem;
+    right: -1.5rem;
+  }
+  
+  .gear-small {
+    width: 3rem;
+    height: 3rem;
+    bottom: -1rem;
+    left: -1rem;
+    animation-direction: reverse;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Анимация кольца для нуля */
+  .planet-ring {
+    position: absolute;
+    width: 6rem;
+    height: 3rem;
+    border: 3px solid rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-25deg);
+    animation: wobble 6s ease-in-out infinite;
+    z-index: 1;
+  }
+  
+  @keyframes wobble {
+    0%, 100% {
+      transform: translate(-50%, -50%) rotate(-25deg);
+    }
+    50% {
+      transform: translate(-50%, -50%) rotate(-15deg);
+    }
+  }
+  
+  /* Анимированный астронавт */
+  .astronaut-container {
+    position: relative;
+    width: 150px;
+    height: 200px;
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .astronaut {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .astronaut-helmet {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    top: 10px;
+    left: 45px;
+    border: 2px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .astronaut-body {
+    position: absolute;
+    width: 80px;
+    height: 100px;
+    background-color: white;
+    border-radius: 40px;
+    top: 60px;
+    left: 35px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .astronaut-pack {
+    position: absolute;
+    width: 40px;
+    height: 60px;
+    background-color: #ddd;
+    border-radius: 10px;
+    top: 70px;
+    left: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: -1;
+  }
+  
+  .astronaut-arm-left, .astronaut-arm-right {
+    position: absolute;
+    width: 20px;
+    height: 60px;
+    background-color: white;
+    border-radius: 10px;
+    top: 70px;
+  }
+  
+  .astronaut-arm-left {
+    left: 20px;
+    transform: rotate(-20deg);
+    animation: wave 3s ease-in-out infinite;
+  }
+  
+  .astronaut-arm-right {
+    left: 110px;
+    transform: rotate(20deg);
+  }
+  
+  .astronaut-leg-left, .astronaut-leg-right {
+    position: absolute;
+    width: 25px;
+    height: 40px;
+    background-color: white;
+    border-radius: 10px;
+    top: 150px;
+  }
+  
+  .astronaut-leg-left {
+    left: 45px;
+  }
+  
+  .astronaut-leg-right {
+    left: 80px;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  
+  @keyframes wave {
+    0%, 100% {
+      transform: rotate(-30deg);
+    }
+    50% {
+      transform: rotate(0deg);
+    }
+  }
+  
+  /* Адаптивность для мобильных устройств */
+  @media (max-width: 640px) {
+    .animated-number-wrapper {
+      width: 5rem;
+      height: 7rem;
+    }
+    
+    .animated-number {
+      font-size: 4rem;
+    }
+    
+    .gear-large {
+      width: 3rem;
+      height: 3rem;
+    }
+    
+    .gear-small {
+      width: 2rem;
+      height: 2rem;
+    }
+    
+    .planet-ring {
+      width: 4rem;
+      height: 2rem;
+    }
+    
+    .astronaut-container {
+      width: 100px;
+      height: 150px;
+    }
+    
+    .astronaut-helmet {
+      width: 40px;
+      height: 40px;
+      top: 10px;
+      left: 30px;
+    }
+    
+    .astronaut-body {
+      width: 60px;
+      height: 80px;
+      top: 40px;
+      left: 20px;
+    }
+    
+    .astronaut-pack {
+      width: 30px;
+      height: 50px;
+      top: 50px;
+      left: 5px;
+    }
+    
+    .astronaut-arm-left, .astronaut-arm-right {
+      width: 15px;
+      height: 45px;
+      top: 50px;
+    }
+    
+    .astronaut-arm-left {
+      left: 10px;
+    }
+    
+    .astronaut-arm-right {
+      left: 75px;
+    }
+    
+    .astronaut-leg-left, .astronaut-leg-right {
+      width: 18px;
+      height: 30px;
+      top: 110px;
+    }
+    
+    .astronaut-leg-left {
+      left: 30px;
+    }
+    
+    .astronaut-leg-right {
+      left: 55px;
+    }
+  }

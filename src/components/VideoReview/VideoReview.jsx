@@ -43,20 +43,41 @@ const VideoReviewTailwind = () => {
     };
   }, []);
 
+  // Добавлен useEffect для установки начальных кадров видео
+  useEffect(() => {
+    const setupVideoPosters = () => {
+      document.querySelectorAll(".video-review-player").forEach((video) => {
+        // Устанавливаем время воспроизведения на первый кадр
+        video.currentTime = 0;
+        
+        // Добавляем обработчик при загрузке метаданных
+        video.onloadedmetadata = function() {
+          this.currentTime = 0;
+        };
+      });
+    };
+    
+    if (videoReview?.length > 0) {
+      setupVideoPosters();
+    }
+  }, [videoReview]);
+
   const handleVideoPlay = (id) => {
     if (activeVideoId === id) {
       // If the video is already active, pause it
       const videoElement = document.getElementById(`video-${id}`);
       if (videoElement) {
         videoElement.pause();
+        videoElement.currentTime = 0; // Сбрасываем время на начало при паузе
         setActiveVideoId(null);
       }
       return;
     }
 
-    // Pause all videos
+    // Pause all videos and reset them to beginning
     document.querySelectorAll(".video-review-player").forEach((video) => {
       video.pause();
+      video.currentTime = 0; // Сбрасываем время на начало
     });
 
     // Play the selected video
@@ -118,14 +139,10 @@ const VideoReviewTailwind = () => {
 
   // Calculate aspect ratio padding based on device orientation
   const getAspectRatioPadding = () => {
-    // Use 16:9 aspect ratio for regular videos (more common)
-    return { paddingBottom: "56.25%" }; // 16:9 ratio
-    
-    // If you specifically need vertical videos (9:16), use:
-    // return { paddingBottom: "177.78%" }; // 9:16 ratio
-    
-    // For 2:4 ratio as previously used:
-    // return { paddingBottom: "200%" }; // 2:4 ratio
+    // Увеличиваем высоту видео примерно в 2 раза от стандартного соотношения 16:9
+    // 16:9 соотношение = 56.25% (9/16 = 0.5625)
+    // Для высоты в 2 раза больше: 56.25% * 2 = 112.5%
+    return { paddingBottom: "112.5%" }; // Увеличенная высота в 2 раза
   };
 
   // Get card dimensions
@@ -224,13 +241,11 @@ const VideoReviewTailwind = () => {
                       <div className="absolute inset-0 flex justify-center items-center overflow-hidden">
                         <video
                           id={`video-${review.id}`}
-                          src={`${import.meta.env.VITE_APP_API_URL_IMAGE.replace(
-                            /\/$/,
-                            ""
-                          )}${review.videoReviewFile}`}
+                          src={`${import.meta.env.VITE_APP_API_URL_IMAGE.replace(/\/$/, "")}${review.videoReviewFile}`}
                           className="video-review-player w-full h-full object-cover"
                           preload="metadata"
                           playsInline
+                          poster={`${import.meta.env.VITE_APP_API_URL_IMAGE.replace(/\/$/, "")}${review.posterImage || review.videoReviewFile.replace(/\.[^.]+$/, '.jpg')}`}
                           onClick={() =>
                             activeVideoId === review.id
                               ? handleVideoPlay(review.id)

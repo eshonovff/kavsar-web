@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosRequest } from "../utils/axiosRequest";
+import { toast } from "react-toastify";
 
 // get Banner
 export const GetBanner = createAsyncThunk(
@@ -62,6 +63,22 @@ export const GetCourse = createAsyncThunk(
   }
 );
 
+// Get Course By Id
+export const GetCourseById = createAsyncThunk(
+  "BannerSlicer/GetCourseById",
+  async ({id, lang = "Ru"} ) => {
+    console.log(lang);
+    
+    try {
+      const { data } = await axiosRequest.get(`api/Course/${id}?language=${lang}`);
+      return data.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
+
 
 //  get Video Review
 
@@ -82,23 +99,41 @@ export const GetVideoReview = createAsyncThunk(
 
 
 //  post Request 
-
 export const PostRequest = createAsyncThunk(
   "BannerSlicer/PostRequest",
-  async(request)=>{
+  async(request, { rejectWithValue }) => {
+    console.log("rea", request);
+    
     try {
-      const { data } = await axiosRequest.post(`api/Request`,request);
+      const { data } = await axiosRequest.post(`api/Request`, request);
+      // Показываем уведомление об успехе
+      toast.success("Заявка успешно отправлена!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       return data.data;
     } catch (error) {
-      console.error(error);
-      
+      // Показываем уведомление об ошибке
+      toast.error("Ошибка при отправке заявки. Пожалуйста, попробуйте позже.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
-)
+);
 
 
 
-
+//  get text rewiew
 export const GetTextReview = createAsyncThunk(
   "BannerSlicer/GetTextReview",
   async (params = { lang: "Ru", pageSize: 100, pageIndex: 1 }) => {
@@ -114,6 +149,78 @@ export const GetTextReview = createAsyncThunk(
       return data.data;
     } catch (error) {
       console.error(error);
+    }
+  }
+);
+
+
+//  post text review 
+export const postTextReview = createAsyncThunk(
+  "BannerSlicer/postTextReview",
+  async (textReview, { dispatch, rejectWithValue }) => {
+    try {
+      const { data } = await axiosRequest.post(`api/Feedback`, textReview);
+ 
+      dispatch(GetTextReview());
+
+      toast.success("Отзыв успешно отправлен!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      
+      return data.data;
+    } catch (error) {
+      console.error("Ошибка в postTextReview:", error.response?.data || error.message);
+      toast.error("Ошибка при отправке отзыва. Пожалуйста, попробуйте позже.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+
+//  get news 
+
+// Get news
+export const GetNews = createAsyncThunk(
+  "BannerSlicer/GetNews",
+  async (lang = "Ru") => {
+    try {
+      const { data } = await axiosRequest.get(`api/News?language=${lang}`);
+      return data.data;
+    } catch (error) {
+      console.error(error);
+      
+    }
+  }
+);
+
+
+
+
+//// get team 
+
+export const GetColleague = createAsyncThunk(
+  "BannerSlicer/GetColleague",
+  async (lang = "Ru") => {
+    try {
+      const { data } = await axiosRequest.get(`api/Colleague/colleagueWithIcons?language=${lang}`);
+      return data.data;
+    } catch (error) { 
+      
+      console.error(error);
+      
     }
   }
 );

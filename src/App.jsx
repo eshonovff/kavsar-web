@@ -1,11 +1,12 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Layout from "./Layout/Layout"
-import Home from "./page/Home/Home"
-import About from "./page/About/About"
+
 import { Toaster } from "react-hot-toast"
-import News from "./page/News/News"
-import Courses from "./page/Courses/Courses"
+
 import { ScrollProvider } from "./hook/ScrollProvider"
+
+import { ToastContainer } from "react-toastify"
+
+import { About, Courses, CoursesByID, Home, Layout, Library, News, NotFound, RequestByID, RequestFor } from "./routes/routes"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 
 
@@ -29,6 +30,26 @@ const App = () => {
       {
         path: "/about",
         element: <About />
+      },
+      {
+        path: "/course/:id",
+        element: <CoursesByID />
+      },
+      {
+        path: "/course/:id/RequestByID",
+        element: <RequestByID />
+      },
+      {
+        path:"/library",
+        element: <Library />
+      },
+      {
+        path:"*",
+        element: <NotFound />
+      },
+      {
+        path:"/requstorInstagram",
+        element: <RequestFor/>
       }
     ]
   }])
@@ -38,6 +59,7 @@ const App = () => {
     <div className="min-w-[400px]">
        <Toaster/>
        <RouterProvider router={router}/> 
+       <ToastContainer />
     </div>
     </ScrollProvider>
   )
