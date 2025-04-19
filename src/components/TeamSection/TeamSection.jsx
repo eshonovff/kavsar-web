@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Users, Award, Briefcase, Star, Code, Mail, Globe, Linkedin, ChevronDown, ChevronUp } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetColleague } from '../../Api/bannerApi';
+import { useTranslation } from 'react-i18next';
 
 // Компонент карточки сотрудника
 const TeamMemberCard = ({ member }) => {
+  const { t } = useTranslation();
+  
   return (
     <div className="group">
       <div className="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-md shadow-lg transition-all duration-300 transform group-hover:shadow-xl group-hover:scale-[1.02] h-full flex flex-col">
@@ -23,7 +26,7 @@ const TeamMemberCard = ({ member }) => {
               <div key={index} className="w-8 h-8 rounded-full bg-white/90 p-1 shadow-md">
                 <img 
                   src={`${import.meta.env.VITE_APP_API_URL_IMAGE}${icon}`} 
-                  alt="Технология" 
+                  alt={t('team.skillAlt')}
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -67,6 +70,7 @@ const TeamSection = () => {
   const dispatch = useDispatch();
   const { colleague, loading } = useSelector((state) => state.BannerSlicer);
   const [showAllTeachers, setShowAllTeachers] = useState(false);
+  const { t } = useTranslation();
   
   useEffect(() => {
     // Загружаем данные о команде
@@ -88,13 +92,11 @@ const TeamSection = () => {
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
-              Руководство академии
+              {t('team.leadership.title')}
             </h2>
             <div className="w-20 h-1 bg-gradient-to-r from-indigo-600 to-violet-600 mb-6 mx-auto"></div>
             <p className="text-gray-700 max-w-3xl mx-auto">
-              Наша команда руководителей — это опытные профессионалы, 
-              которые определяют стратегию развития академии и создают вдохновляющую 
-              среду для обучения и профессионального роста.
+              {t('team.leadership.description')}
             </p>
           </div>
           
@@ -122,7 +124,7 @@ const TeamSection = () => {
                           <div key={i} className="w-10 h-10 rounded-full bg-white/90 p-1.5 shadow-lg">
                             <img 
                               src={`${import.meta.env.VITE_APP_API_URL_IMAGE}${icon}`} 
-                              alt="Навык" 
+                              alt={t('team.skillAlt')}
                               className="w-full h-full object-contain"
                             />
                           </div>
@@ -184,12 +186,11 @@ const TeamSection = () => {
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
-              Наши преподаватели и специалисты
+              {t('team.teachers.title')}
             </h2>
             <div className="w-20 h-1 bg-gradient-to-r from-indigo-600 to-violet-600 mb-6 mx-auto"></div>
             <p className="text-gray-700 max-w-3xl mx-auto">
-              Наши преподаватели — эксперты в своих областях, которые не только передают знания, 
-              но и делятся практическим опытом, вдохновляя студентов достигать новых высот.
+              {t('team.teachers.description')}
             </p>
           </div>
           
@@ -212,10 +213,10 @@ const TeamSection = () => {
                       <Users className="w-8 h-8 text-indigo-600" />
                     </div>
                     <h3 className="text-xl font-medium mb-2 text-gray-800">
-                      Скоро здесь появится больше информации о наших преподавателях
+                      {t('team.teachers.empty.title')}
                     </h3>
                     <p className="text-gray-600">
-                      Мы работаем над наполнением этого раздела. Загляните сюда позже!
+                      {t('team.teachers.empty.message')}
                     </p>
                   </div>
                 )}
@@ -233,12 +234,12 @@ const TeamSection = () => {
                       {showAllTeachers ? (
                         <>
                           <ChevronUp className="w-5 h-5" />
-                          <span>Скрыть</span>
+                          <span>{t('team.teachers.button.hide')}</span>
                         </>
                       ) : (
                         <>
                           <ChevronDown className="w-5 h-5" />
-                          <span>Показать еще {allTeachers.length - 8} преподавателей</span>
+                          <span>{t('team.teachers.button.showMore', { count: allTeachers.length - 8 })}</span>
                         </>
                       )}
                     </span>

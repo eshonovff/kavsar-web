@@ -23,7 +23,7 @@ const Layout = () => {
     return path !== "/" && location.pathname.startsWith(path);
   };
 
-  // Style for active button
+  // Style for active button 
   const activeStyle = {
     background:
       "linear-gradient(to top, rgba(49, 46, 129, 0.6), rgba(88, 28, 135, 0.6))",

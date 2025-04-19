@@ -203,5 +203,49 @@
       "title": "No courses found",
       "description": "Try changing your filter or search parameters"
     }
+  },
+  "about": {
+    "title": "About our academy",
+    "intro": {
+      "paragraph1": "We create more than just courses — we build a community where everyone can grow, develop, and realize their dreams. Kavsar Academy is a territory of opportunities where learning becomes an inspiring journey.",
+      "paragraph2": "We offer courses for all ages and interests:",
+      "specialties": "IT and programming, medical training, cooking, foreign languages, preschool development, driving school, sewing",
+      "paragraph2End": "and much more. Here, everyone finds what brings them closer to their goal.",
+      "paragraph3": "Our teachers are not just specialists, but true mentors who share knowledge with passion and support at every step. Modern methods, practice from day one, and an individual approach make learning with us effective and inspiring.",
+      "final1": "Learn with comfort",
+      "final2": "develop without boundaries",
+      "final3": "build your future with us!",
+      "slogan": "Kavsar Academy — where your success begins."
+    },
+    "video": {
+      "unsupported": "Your browser doesn't support video",
+      "notFound": "Video not found"
+    },
+    "achievements": {
+      "title": "Our achievements",
+      "graduates": "Graduates",
+      "programs": "Educational programs",
+      "recommend": "Recommend us",
+      "experience": "Years of experience"
+    }
+  },
+  "team": {
+    "skillAlt": "Technology",
+    "leadership": {
+      "title": "Academy Leadership",
+      "description": "Our leadership team consists of experienced professionals who define the academy's development strategy and create an inspiring environment for learning and professional growth."
+    },
+    "teachers": {
+      "title": "Our Teachers and Specialists",
+      "description": "Our teachers are experts in their fields who not only share knowledge but also practical experience, inspiring students to reach new heights.",
+      "empty": {
+        "title": "More information about our teachers will appear here soon",
+        "message": "We are working on filling this section. Check back later!"
+      },
+      "button": {
+        "hide": "Hide",
+        "showMore": "Show {{count}} more teachers"
+      }
+    }
   }
 }
