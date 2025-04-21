@@ -12,11 +12,12 @@ const News = () => {
   const dispatch = useDispatch();
   const { newss, course } = useSelector((state) => state.BannerSlicer);
    
-  console.log("newss:", newss);
+  console.log("newss:", course);
   
   useEffect(() => {
     // Гирифтани ахбор аз backend
     dispatch(GetNews());
+
   }, [dispatch, t]);
 
   // Гирифтани курсҳо вақте ки ягон ахбор интихоб мешавад
@@ -124,15 +125,25 @@ const News = () => {
                 </div>
               </div>
               
-              {/* Қисмати курсҳо дар поёни мақолаи ахбор */}
+              {/* Қисмати курсҳо дар поёни мақолаи ахбор - UPDATED */}
               {course && course.length > 0 && (
                 <div className="mt-12 pt-6 border-t border-gray-200">
-                  <h3 className="text-xl font-bold mb-4">{t("news.ourCourses") || "Курсҳои мо"}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <h3 className="text-xl font-bold mb-6">{t("news.ourCourses") || "Курсҳои мо"}</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {course.slice(0, 4).map(item => (
-                      <div key={item.id} className="bg-indigo-50 rounded-lg p-4 hover:shadow-md transition-shadow">
-                        <h4 className="font-medium text-indigo-700">{item.title}</h4>
-                        <p className="text-sm text-gray-600 mt-1">{item.description?.substring(0, 100)}...</p>
+                      <div key={item.id} className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow">
+                        {/* Тасвир барои курс - аз серверҳои API суратро мегирад */}
+                        <div className="h-32 overflow-hidden">
+                          <img 
+                            src={item.imagePath ? import.meta.env.VITE_APP_API_URL_IMAGE + item.imagePath : '/placeholder-course.jpg'} 
+                            alt={item.name} 
+                            className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        {/* Танҳо номи курс */}
+                        <div className="p-3">
+                          <h4 className="font-medium text-gray-800 text-center truncate">{item.name}</h4>
+                        </div>
                       </div>
                     ))}
                   </div>

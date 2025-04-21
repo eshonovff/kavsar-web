@@ -207,14 +207,14 @@ const Address = () => {
           </div>
         </div>
         
-        {/* Mobile Call Button - Only appears on mobile devices */}
+        {/* Mobile Call Button - Repositioned higher up */}
         {isMobile && (
-          <div className="fixed bottom-5 right-5 z-50">
+          <div className="fixed bottom-24 right-5 z-50">
             <a 
               href="tel:+992205122525" 
-              className="flex items-center justify-center w-14 h-14 bg-gradient-to-r from-indigo-600 to-pink-500 rounded-full text-white shadow-lg animate-pulse"
+              className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-600 to-pink-500 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19.44,13c-.22,0-.45-.07-.67-.12a9.44,9.44,0,0,1-1.31-.39,2,2,0,0,0-2.48,1l-.22.45a12.18,12.18,0,0,1-2.66-2,12.18,12.18,0,0,1-2-2.66L10.52,9a2,2,0,0,0,1-2.48,10.33,10.33,0,0,1-.39-1.31c-.05-.22-.09-.45-.12-.68a3,3,0,0,0-3-2.49h-3a3,3,0,0,0-3,3.41A19,19,0,0,0,18.53,21.91l.38,0a3,3,0,0,0,2-.76,3,3,0,0,0,1-2.25v-3A3,3,0,0,0,19.44,13Z"/>
               </svg>
             </a>
