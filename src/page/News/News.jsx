@@ -4,7 +4,7 @@ import { GetCourse, GetNews } from '../../Api/bannerApi';
 import { useTranslation } from 'react-i18next';
 
 const News = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation(); // Добавил i18n для отслеживания изменения языка
   const [selectedNews, setSelectedNews] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -12,57 +12,76 @@ const News = () => {
   const dispatch = useDispatch();
   const { newss, course } = useSelector((state) => state.BannerSlicer);
    
-  console.log("newss:", course);
+  console.log("newss:", newss);
+  console.log("course:", course);
   
+  // Загрузка новостей при монтировании компонента или изменении языка
   useEffect(() => {
-    // Гирифтани ахбор аз backend
     dispatch(GetNews());
+  }, [dispatch, i18n.language]); // Добавил зависимость от языка
 
-  }, [dispatch, t]);
-
-  // Гирифтани курсҳо вақте ки ягон ахбор интихоб мешавад
+  // Загрузка курсов при выборе новости
   useEffect(() => {
     if (selectedNews) {
       dispatch(GetCourse());
     }
   }, [selectedNews, dispatch]);
 
-  // Филтр кардани ахбор аз рӯи ҷустуҷӯ
-  const filteredNews = newss ? newss.filter(item => {
-    const matchesSearch = 
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      item.summary.toLowerCase().includes(searchTerm.toLowerCase());
+  // Безопасная фильтрация новостей с проверками
+  const filteredNews = React.useMemo(() => {
+    if (!newss || !Array.isArray(newss)) return [];
     
-    return matchesSearch;
-  }) : [];
+    return newss.filter(item => {
+      if (!item) return false;
+      
+      const title = item.title || "";
+      const summary = item.summary || "";
+      
+      const matchesSearch = 
+        title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        summary.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      return matchesSearch;
+    });
+  }, [newss, searchTerm]);
 
-  // Саҳифабандӣ
+  // Пагинация
   const indexOfLastNews = currentPage * newsPerPage;
   const indexOfFirstNews = indexOfLastNews - newsPerPage;
   const currentNews = filteredNews.slice(indexOfFirstNews, indexOfLastNews);
   const totalPages = Math.ceil(filteredNews.length / newsPerPage);
 
-  // Функсия барои формат кардани сана
+  // Функция форматирования даты с обработкой ошибок
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('tg-TJ', options);
+    try {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString(i18n.language || 'tg-TJ', options);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return dateString; // Возвращаем исходную строку, если форматирование не удалось
+    }
   };
 
-  // Кушодани ахбори пурра
+  // Открытие детальной новости
   const openNewsDetail = (news) => {
     setSelectedNews(news);
     window.scrollTo(0, 0);
   };
 
-  // Пӯшидани ахбори муфассал
+  // Закрытие детальной новости
   const closeNewsDetail = () => {
     setSelectedNews(null);
+  };
+
+  // Обработчик ошибок для изображений
+  const handleImageError = (e) => {
+    e.target.src = 'https://via.placeholder.com/800x400?text=No+Image';
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       {selectedNews ? (
-        // Намоиши муфассали ахбор
+        // Детальный просмотр новости
         <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="mb-6">
             <button 
@@ -72,32 +91,33 @@ const News = () => {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
               </svg>
-              {t("news.backToList") || "Бозгашт ба рӯйхати ахбор"}
+              {t("news.backToList", "Бозгашт ба рӯйхати ахбор")}
             </button>
           </div>
           
           <article className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div className="relative">
               <img 
-                src={import.meta.env.VITE_APP_API_URL_IMAGE + selectedNews.mediaUrl} 
-                alt={selectedNews.title} 
+                src={selectedNews.mediaUrl ? `${import.meta.env.VITE_APP_API_URL_IMAGE}${selectedNews.mediaUrl}` : 'https://via.placeholder.com/800x400?text=No+Image'} 
+                alt={selectedNews.title || t("news.newsItem", "Ахбор")} 
                 className="w-full h-80 object-cover"
+                onError={handleImageError}
               />
             </div>
             
             <div className="p-6 md:p-8">
               <div className="flex justify-between items-center mb-4">
                 <span className="text-gray-500 text-sm">{formatDate(selectedNews.createdAt)}</span>
-                <div className="text-gray-500 text-sm">{t("news.author") || "Муаллиф"}: {selectedNews.author}</div>
+                <div className="text-gray-500 text-sm">{t("news.author", "Муаллиф")}: {selectedNews.author || t("news.unknown", "Номаълум")}</div>
               </div>
               
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                {selectedNews.title}
+                {selectedNews.title || t("news.untitled", "Бе сарлавҳа")}
               </h1>
               
               <div 
                 className="prose prose-indigo max-w-none" 
-                dangerouslySetInnerHTML={{ __html: selectedNews.content }} 
+                dangerouslySetInnerHTML={{ __html: selectedNews.content || selectedNews.summary || "" }} 
               />
               
               <div className="mt-8 pt-6 border-t border-gray-200">
@@ -125,24 +145,25 @@ const News = () => {
                 </div>
               </div>
               
-              {/* Қисмати курсҳо дар поёни мақолаи ахбор - UPDATED */}
-              {course && course.length > 0 && (
+              {/* Раздел курсов внизу новостной статьи - ОБНОВЛЕНО */}
+              {course && Array.isArray(course) && course.length > 0 && (
                 <div className="mt-12 pt-6 border-t border-gray-200">
-                  <h3 className="text-xl font-bold mb-6">{t("news.ourCourses") || "Курсҳои мо"}</h3>
+                  <h3 className="text-xl font-bold mb-6">{t("news.ourCourses", "Курсҳои мо")}</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {course.slice(0, 4).map(item => (
-                      <div key={item.id} className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow">
-                        {/* Тасвир барои курс - аз серверҳои API суратро мегирад */}
+                      <div key={item.id || Math.random().toString()} className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow">
+                        {/* Изображение для курса */}
                         <div className="h-32 overflow-hidden">
                           <img 
-                            src={item.imagePath ? import.meta.env.VITE_APP_API_URL_IMAGE + item.imagePath : '/placeholder-course.jpg'} 
-                            alt={item.name} 
+                            src={item.imagePath ? `${import.meta.env.VITE_APP_API_URL_IMAGE}${item.imagePath}` : 'https://via.placeholder.com/300x200?text=No+Image'} 
+                            alt={item.name || t("news.course", "Курс")} 
                             className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                            onError={handleImageError}
                           />
                         </div>
-                        {/* Танҳо номи курс */}
+                        {/* Только название курса */}
                         <div className="p-3">
-                          <h4 className="font-medium text-gray-800 text-center truncate">{item.name}</h4>
+                          <h4 className="font-medium text-gray-800 text-center truncate">{item.name || t("news.unnamed", "Бе ном")}</h4>
                         </div>
                       </div>
                     ))}
@@ -153,25 +174,25 @@ const News = () => {
           </article>
         </div>
       ) : (
-        // Рӯйхати ахбор
+        // Список новостей
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          {/* Сарлавҳаи қисмат */}
+          {/* Заголовок раздела */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              {t("news.newsTitle") || "Ахбор"} <span className="bg-gradient-to-r from-indigo-600 to-pink-500 bg-clip-text text-transparent">{t("news.events") || "рӯйдодҳо"}</span>
+              {t("news.newsTitle", "Ахбор")} <span className="bg-gradient-to-r from-indigo-600 to-pink-500 bg-clip-text text-transparent">{t("news.events", "рӯйдодҳо")}</span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              {t("news.stayUpdated") || "Аз охирин ахбор, чорабиниҳо ва дастовардҳои ширкати мо бохабар бошед"}
+              {t("news.stayUpdated", "Аз охирин ахбор, чорабиниҳо ва дастовардҳои ширкати мо бохабар бошед")}
             </p>
           </div>
           
-          {/* Ҷустуҷӯ */}
+          {/* Поиск */}
           <div className="mb-10">
             <div className="flex justify-center items-center mb-6">
               <div className="relative w-full max-w-md">
                 <input
                   type="text"
-                  placeholder={t("news.searchPlaceholder") || "Ҷустуҷӯи ахбор..."}
+                  placeholder={t("news.searchPlaceholder", "Ҷустуҷӯи ахбор...")}
                   value={searchTerm}
                   onChange={(e) => {
                     setSearchTerm(e.target.value);
@@ -186,15 +207,18 @@ const News = () => {
             </div>
           </div>
           
-          {/* Намоиши филтрҳои интихобшуда */}
+          {/* Отображение выбранных фильтров */}
           {searchTerm && (
             <div className="mb-8 flex items-center justify-center">
-              <span className="text-gray-600 mr-2">{t("news.filters") || "Филтрҳо"}:</span>
+              <span className="text-gray-600 mr-2">{t("news.filters", "Филтрҳо")}:</span>
               <div className="flex flex-wrap gap-2">
                 <div className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm flex items-center">
-                  {t("news.search") || "Ҷустуҷӯ"}: "{searchTerm}"
+                  {t("news.search", "Ҷустуҷӯ")}: "{searchTerm}"
                   <button
-                    onClick={() => setSearchTerm("")}
+                    onClick={() => {
+                      setSearchTerm("");
+                      setCurrentPage(1); // Сброс страницы при сбросе поиска
+                    }}
                     className="ml-2 text-indigo-500 hover:text-indigo-700"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -206,20 +230,21 @@ const News = () => {
             </div>
           )}
           
-          {/* Рӯйхати ахбор */}
+          {/* Список новостей */}
           {currentNews && currentNews.length > 0 ? (
             <div className="space-y-10">
               {currentNews.map(item => (
                 <div 
-                  key={item.id} 
+                  key={item.id || Math.random().toString()} 
                   className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
                 >
                   <div className="md:flex">
                     <div className="md:flex-shrink-0">
                       <img 
                         className="h-48 w-full object-cover md:h-full md:w-48" 
-                        src={import.meta.env.VITE_APP_API_URL_IMAGE + item.mediaUrl} 
-                        alt={item.title} 
+                        src={item.mediaUrl ? `${import.meta.env.VITE_APP_API_URL_IMAGE}${item.mediaUrl}` : 'https://via.placeholder.com/400x300?text=No+Image'} 
+                        alt={item.title || t("news.newsItem", "Ахбор")} 
+                        onError={handleImageError}
                       />
                     </div>
                     <div className="p-6 md:p-8 w-full">
@@ -228,22 +253,22 @@ const News = () => {
                       </div>
                       
                       <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-                        {item.title}
+                        {item.title || t("news.untitled", "Бе сарлавҳа")}
                       </h2>
                       
                       <p className="text-gray-600 mb-4 line-clamp-3">
-                        {item.summary}
+                        {item.summary || t("news.noSummary", "Хулоса мавҷуд нест")}
                       </p>
                       
                       <div className="flex justify-between items-center">
                         <div className="text-xs text-gray-500">
-                          {t("news.author") || "Муаллиф"}: {item.author}
+                          {t("news.author", "Муаллиф")}: {item.author || t("news.unknown", "Номаълум")}
                         </div>
                         <button
                           onClick={() => openNewsDetail(item)}
                           className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors duration-300"
                         >
-                          {t("news.readMore") || "Бештар"}
+                          {t("news.readMore", "Бештар")}
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                           </svg>
@@ -259,12 +284,12 @@ const News = () => {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <h3 className="text-xl font-medium text-gray-700 mb-2">{t("news.noNewsFound") || "Ахбор ёфт нашуд"}</h3>
-              <p className="text-gray-500">{t("news.changeFilters") || "Параметрҳои филтрро тағйир диҳед"}</p>
+              <h3 className="text-xl font-medium text-gray-700 mb-2">{t("news.noNewsFound", "Ахбор ёфт нашуд")}</h3>
+              <p className="text-gray-500">{t("news.changeFilters", "Параметрҳои филтрро тағйир диҳед")}</p>
             </div>
           )}
           
-          {/* Саҳифабандӣ */}
+          {/* Пагинация */}
           {totalPages > 1 && (
             <div className="flex justify-center items-center space-x-2 mt-10">
               <button
@@ -276,7 +301,7 @@ const News = () => {
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
-                {t("news.previous") || "Қаблӣ"}
+                {t("news.previous", "Қаблӣ")}
               </button>
               
               {[...Array(totalPages)].map((_, i) => (
@@ -302,29 +327,29 @@ const News = () => {
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
-                {t("news.next") || "Навбатӣ"}
+                {t("news.next", "Навбатӣ")}
               </button>
             </div>
           )}
           
-          {/* Обуна барои ахбор */}
+          {/* Подписка на новости */}
           <div className="mt-20 bg-gradient-to-r from-indigo-600 to-pink-500 rounded-2xl p-8 md:p-10 text-white">
             <div className="md:flex justify-between items-center">
               <div className="mb-6 md:mb-0 md:mr-8">
-                <h3 className="text-2xl font-bold mb-2">{t("news.subscribe") || "Ба ахбори мо обуна шавед"}</h3>
+                <h3 className="text-2xl font-bold mb-2">{t("news.subscribe", "Ба ахбори мо обуна шавед")}</h3>
                 <p className="text-indigo-100">
-                  {t("news.subscribeDescription") || "Охирин ахбор ва пешниҳодҳои махсусро мустақиман тавассути почтаи электронии худ гиред"}
+                  {t("news.subscribeDescription", "Охирин ахбор ва пешниҳодҳои махсусро мустақиман тавассути почтаи электронии худ гиред")}
                 </p>
               </div>
               <div className="flex-shrink-0 w-full md:w-auto">
                 <div className="flex">
                   <input
                     type="email"
-                    placeholder={t("news.yourEmail") || "Почтаи электронии шумо"}
+                    placeholder={t("news.yourEmail", "Почтаи электронии шумо")}
                     className="w-full md:w-64 px-4 py-3 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-white"
                   />
                   <button className="bg-white text-indigo-600 font-medium px-4 py-3 rounded-r-lg hover:bg-indigo-50 transition-colors">
-                    {t("news.subscribeButton") || "Обуна шудан"}
+                    {t("news.subscribeButton", "Обуна шудан")}
                   </button>
                 </div>
               </div>

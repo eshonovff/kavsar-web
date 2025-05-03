@@ -4,15 +4,87 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetChooseUs } from "../../Api/bannerApi";
 import { useScroll } from "../../hook/ScrollProvider";
 
+// Компоненти индикатори загрузка дар услуби YouTube
+const YoutubeStyleLoader = () => {
+  // Создаем массив из 3 элементов для скелетона
+  const skeletonItems = [1, 2, 3];
+  
+  return (
+    <div className="max-w-[1500px] w-full m-auto py-16 px-4 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full opacity-5 -mr-20 -mt-20"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500 rounded-full opacity-5 -ml-40 -mb-40"></div>
+      
+      <div className="relative z-10">
+        {/* Скелетон для заголовка */}
+        <div className="h-10 bg-gray-200 rounded-md w-1/3 mx-auto mb-12 relative overflow-hidden">
+          <div className="youtube-loading-shimmer absolute inset-0"></div>
+        </div>
+        
+        {/* Скелетон для карточек */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {skeletonItems.map((item, index) => (
+            <div 
+              key={index}
+              className="h-52 rounded-xl bg-gray-200 relative overflow-hidden"
+            >
+              <div className="youtube-loading-shimmer absolute inset-0"></div>
+              
+              {/* Скелетон для иконки */}
+              <div className="absolute top-6 left-6 w-14 h-14 rounded-full bg-gray-300"></div>
+              
+              {/* Скелетон для заголовка */}
+              <div className="absolute top-24 left-6 h-6 bg-gray-300 rounded-md w-3/4"></div>
+              
+              {/* Скелетон для текста */}
+              <div className="absolute top-32 left-6 h-4 bg-gray-300 rounded-md w-5/6"></div>
+              <div className="absolute top-38 left-6 h-4 bg-gray-300 rounded-md w-4/6"></div>
+              
+              {/* Скелетон для кнопки */}
+              <div className="absolute bottom-6 right-6 w-8 h-8 rounded-full bg-gray-300"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* CSS для анимации загрузки */}
+      <style jsx>{`
+        .youtube-loading-shimmer {
+          background: linear-gradient(90deg, 
+            rgba(0,0,0,0) 0%, 
+            rgba(255,255,255,0.3) 50%, 
+            rgba(0,0,0,0) 100%);
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 const ChooseUs = () => {
   const dispatch = useDispatch();
-  const { choose } = useSelector((state) => state.BannerSlicer);
+  const { choose, loading } = useSelector((state) => state.BannerSlicer);
   const { t } = useTranslation();
   const { requestRef, scrollToSection } = useScroll();
   
   useEffect(() => {
     dispatch(GetChooseUs());
   }, [dispatch]);
+
+  // Отображение индикатора загрузки
+  if (loading?.chooseUs) {
+    return <YoutubeStyleLoader />;
+  }
 
   // Custom layout for exactly 4 or 5 items
   const itemCount = choose?.length || 0;
@@ -172,7 +244,7 @@ const ModernCard3D = ({ item, index, scrollToSection, requestRef }) => {
         {/* Animated arrow */}
         <div className="flex justify-end mt-2">
       <div 
-        onClick={() => scrollToSection(requestRef)}
+        onClick={() => scrollToSection && scrollToSection(requestRef)}
         className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center overflow-hidden group-hover:bg-blue-600 transition-colors duration-300 cursor-pointer"
       >
         <svg

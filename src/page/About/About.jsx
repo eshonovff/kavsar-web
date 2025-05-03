@@ -23,7 +23,8 @@ const About = () => {
   const [videoUrl, setVideoUrl] = useState('');
   const { t } = useTranslation();
 
-  console.log(colleague);
+  console.log("Gallery data:", galerry);
+  console.log("Colleague data:", colleague);
   
   useEffect(() => {
     // Загружаем галерею
@@ -33,7 +34,7 @@ const About = () => {
   // Когда галерея загружена, устанавливаем URL видео
   useEffect(() => {
     if (galerry && galerry.length > 0) {
-      // Устанавливаем URL для видео - первый элемент из галереи
+      // Используем mediaUrl вместо mediaUrl, как указано в консоли
       setVideoUrl(`${import.meta.env.VITE_APP_API_URL_IMAGE}${galerry[0].mediaUrl}`);
       console.log("Видео URL установлен:", `${import.meta.env.VITE_APP_API_URL_IMAGE}${galerry[0].mediaUrl}`);
     }
@@ -58,7 +59,7 @@ const About = () => {
       
       {/* Раздел заголовка */}
       <section className="py-20 relative">
-        <div className="container mx-auto px-4 max-w-6xl relative">
+        <div className="container mx-auto px-4 max-w-[1500px] relative">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
             {t("about.title")}
           </h1>

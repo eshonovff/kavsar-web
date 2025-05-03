@@ -59,12 +59,17 @@ const CoursesByID = () => {
   const [activeTab, setActiveTab] = useState("description");
 
   useEffect(() => {
-    // Генерируем случайный рейтинг между 4.5 и 5.0
+    // Установка рейтинга
     setRating(4.5 + Math.random() * 0.5);
 
-    dispatch(GetCourseById({ id }));
+    // Безопасная загрузка данных курса
+    if (id) {
+      dispatch(GetCourseById({ id }));
+    }
+    
+    // Загрузка списка всех курсов
     dispatch(GetCourse());
-  }, [id, dispatch]);
+  }, [id, dispatch, t]); // Добавляем t в зависимости, чтобы реагировать на изменения языка
 
   // Если курс не найден
   if (!activeCourse) {
@@ -86,16 +91,16 @@ const CoursesByID = () => {
             />
           </svg>
           <h2 className="text-2xl font-bold text-gray-700 mb-2">
-            Курс не найден
+            {t("Course not found", "Курс не найден")}
           </h2>
           <p className="text-gray-600 mb-6">
-            К сожалению, запрашиваемый курс не найден или был удален.
+            {t("Unfortunately, the requested course was not found or has been deleted.", "К сожалению, запрашиваемый курс не найден или был удален.")}
           </p>
           <Link
             to="/courses"
             className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
           >
-            Вернуться к списку курсов
+            {t("Return to course list", "Вернуться к списку курсов")}
           </Link>
         </div>
       </div>
@@ -149,7 +154,7 @@ const CoursesByID = () => {
                 />
               </svg>
               <span className="ml-2 text-gray-700 font-medium truncate">
-                {activeCourse.name}
+                {activeCourse.name || t("Course Details")}
               </span>
             </li>
           </ol>
@@ -165,8 +170,11 @@ const CoursesByID = () => {
               src={`${import.meta.env.VITE_APP_API_URL_IMAGE}${
                 activeCourse.imagePath
               }`}
-              alt={activeCourse.name}
+              alt={activeCourse.name || t("Course")}
               className="w-full h-80 object-cover"
+              onError={(e) => {
+                e.target.src = 'https://via.placeholder.com/1920x640?text=No+Image';
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div>
 
@@ -191,7 +199,7 @@ const CoursesByID = () => {
                 </span>
               </div>
               <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                {activeCourse.name}
+                {activeCourse.name || t("Course")}
               </h1>
              
             </div>
@@ -247,17 +255,18 @@ const CoursesByID = () => {
                         {t("AboutCourse")}
                       </h2>
                       <div className="prose max-w-none text-gray-700 mb-8">
-                        <p className="mb-4">{activeCourse.description}</p>
+                        <p className="mb-4">{activeCourse.description || t("No description available")}</p>
                         <p>
                         {t(
-  "CourseDescriptionFallback",
-  "Наша академия предлагает этот курс с целью помочь вам приобрести не только теоретические знания, но и практические навыки. Программа разработана опытными преподавателями и адаптирована для студентов с разным уровнем подготовки — от начинающих до продвинутых. Современные методики обучения и индивидуальный подход к каждому студенту обеспечивают высокую эффективность обучения и стабильный прогресс."
-)}
+                          "CourseDescriptionFallback",
+                          "Наша академия предлагает этот курс с целью помочь вам приобрести не только теоретические знания, но и практические навыки. Программа разработана опытными преподавателями и адаптирована для студентов с разным уровнем подготовки — от начинающих до продвинутых. Современные методики обучения и индивидуальный подход к каждому студенту обеспечивают высокую эффективность обучения и стабильный прогресс."
+                        )}
                         </p>
                       </div>
 
                       {/* Материалы */}
                       {activeCourse.materials &&
+                        Array.isArray(activeCourse.materials) && 
                         activeCourse.materials.length > 0 && (
                           <div className="mb-8">
                             <h3 className="text-xl font-semibold text-gray-900 mb-4">
@@ -387,22 +396,70 @@ const CoursesByID = () => {
                   {activeTab === "instructor" && (
                     <div>
                       <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                        {t("MeetInstructor")}
+                        {activeCourse.colleagues && Array.isArray(activeCourse.colleagues) && activeCourse.colleagues.length > 1 
+                          ? t("MeetInstructors", "Познакомьтесь с преподавателями") 
+                          : t("MeetInstructor", "Познакомьтесь с преподавателем")}
                       </h2>
 
-                      <div className="bg-gray-50 rounded-lg p-6 flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
-                        <div className="flex-shrink-0">
-                          <div className="h-24 w-24 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
-                            {activeCourse.colleague &&
-                            activeCourse.colleague.profileImage ? (
-                              <img
-                                src={`${
-                                  import.meta.env.VITE_APP_API_URL_IMAGE
-                                }${activeCourse.colleague.profileImage}`}
-                                alt={`${activeCourse.colleague.firstName} ${activeCourse.colleague.lastName}`}
-                                className="h-full w-full object-cover"
-                              />
-                            ) : (
+                      {/* Проверяем, есть ли массив colleagues и отображаем всех преподавателей */}
+                      {activeCourse.colleagues && Array.isArray(activeCourse.colleagues) && activeCourse.colleagues.length > 0 ? (
+                        <div className="space-y-6">
+                          {activeCourse.colleagues.map((colleague, index) => (
+                            <div key={index} className="bg-gray-50 rounded-lg p-6 flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
+                              <div className="flex-shrink-0">
+                                <div className="h-24 w-24 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                                  {colleague.profileImage ? (
+                                    <img
+                                      src={`${import.meta.env.VITE_APP_API_URL_IMAGE}${colleague.profileImage}`}
+                                      alt={colleague.fullName || t("Instructor")}
+                                      className="h-full w-full object-cover"
+                                      onError={(e) => {
+                                        e.target.src = 'https://via.placeholder.com/150?text=No+Image';
+                                      }}
+                                    />
+                                  ) : (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-12 w-12 text-gray-400"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div>
+                                <h3 className="text-xl font-semibold text-gray-900">
+                                  {colleague.fullName || t("Instructor Name")}
+                                </h3>
+                                <p className="text-indigo-600 mb-3">
+                                  {colleague.role || t("CourseInstructor")}
+                                </p>
+                                {colleague.about && (
+                                  <div className="text-gray-700">
+                                    <p>{colleague.about}</p>
+                                  </div>
+                                )}
+                                {colleague.summary && (
+                                  <div className="text-gray-600 text-sm mt-2">
+                                    <p>{colleague.summary}</p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        // Запасной вариант, если массив преподавателей отсутствует
+                        <div className="bg-gray-50 rounded-lg p-6 flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
+                          <div className="flex-shrink-0">
+                            <div className="h-24 w-24 rounded-full bg-gray-300 flex items-center justify-center">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-12 w-12 text-gray-400"
@@ -415,27 +472,22 @@ const CoursesByID = () => {
                                   clipRule="evenodd"
                                 />
                               </svg>
-                            )}
+                            </div>
+                          </div>
+
+                          <div>
+                            <h3 className="text-xl font-semibold text-gray-900">
+                              {t("ExperiencedInstructor")}
+                            </h3>
+                            <p className="text-indigo-600 mb-3">
+                              {t("CourseInstructor")}
+                            </p>
+                            <div className="text-gray-700">
+                              <p>{t("InstructorDescriptionFallback", "Наши опытные инструкторы являются экспертами в своей области и готовы поделиться своими знаниями и опытом. Они разработали этот курс с учетом самых современных методик обучения.")}</p>
+                            </div>
                           </div>
                         </div>
-
-                        <div>
-                          <h3 className="text-xl font-semibold text-gray-900">
-                            {activeCourse.colleague
-                              ? `${activeCourse.colleague.firstName} ${activeCourse.colleague.lastName}`
-                              : t("ExperiencedInstructor")}
-                          </h3>
-                          <p className="text-indigo-600 mb-3">
-                            {t("CourseInstructor")}
-                          </p>
-                          {activeCourse.colleague &&
-                            activeCourse.colleague.about && (
-                              <div className="text-gray-700">
-                                <p>{activeCourse.colleague.about}</p>
-                              </div>
-                            )}
-                        </div>
-                      </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -447,7 +499,7 @@ const CoursesByID = () => {
                   <div className="text-center mb-6">
                     <div className="text-3xl font-bold text-gray-900 mb-2">
                       {activeCourse.price
-                        ? `${activeCourse.price} сомони`
+                        ? `${activeCourse.price} ${t("somoni", "сомони")}`
                         : t("Free")}
                     </div>
                   </div>
@@ -559,6 +611,7 @@ const CoursesByID = () => {
                     </h4>
                     <div className="flex flex-wrap">
                       {activeCourse.materials &&
+                        Array.isArray(activeCourse.materials) &&
                         activeCourse.materials.map((material, index) => (
                           <MaterialTag key={index} text={material} />
                         ))}
@@ -570,20 +623,20 @@ const CoursesByID = () => {
           </div>
         </div>
 
-        {/* Другие курсы */}
-        {/* Другие курсы */}
+        {/* Другие курсы - Исправленная проблемная часть */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
             {t("OtherCourses")}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {course &&
+            {course && Array.isArray(course) && 
               course
-                .filter((item) => item.id !== activeCourse.id)
+                .filter((item) => item && activeCourse && item.id !== activeCourse.id)
+                .slice(0, 3) // Ограничиваем количество отображаемых курсов
                 .map((item) => (
                   <div
-                    key={item.id}
+                    key={item.id || Math.random().toString()}
                     className="bg-gradient-to-br from-blue-50 to-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group"
                   >
                     <div className="flex flex-col sm:flex-row">
@@ -593,9 +646,12 @@ const CoursesByID = () => {
                           src={`${import.meta.env.VITE_APP_API_URL_IMAGE}${
                             item.imagePath
                           }`}
-                          alt={item.name}
+                          alt={item.name || t("Course")}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
+                          onError={(e) => {
+                            e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
+                          }}
                         />
                         {/* Bright overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-blue-100/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -608,10 +664,10 @@ const CoursesByID = () => {
 
                         <div>
                           <h3 className="font-medium text-base text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-1 pr-10">
-                            {item.name}
+                            {item.name || t("Unnamed Course")}
                           </h3>
                           <p className="text-sm text-gray-600 line-clamp-2 mt-2">
-                            {item.description}
+                            {item.description || t("No description available")}
                           </p>
                         </div>
 
