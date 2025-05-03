@@ -7,7 +7,6 @@ import ChooseUs from "../../components/ChooseUs/ChooseUs";
 import { motion } from "framer-motion";
 import "./Home.css";
 import Course from "../../components/Course/Course";
-import { Button } from "antd";
 import Image1 from "../../assets/IMG_1448.png";
 import VideoReview from "../../components/VideoReview/VideoReview";
 import Request from "../../components/Request/Request";
@@ -17,7 +16,7 @@ import { useScroll } from "../../hook/ScrollProvider";
 
 const Homeus = () => {
   const dispatch = useDispatch();
-  const { galerry } = useSelector((state) => state.BannerSlicer);
+  const { gallery } = useSelector((state) => state.BannerSlicer);
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
@@ -75,11 +74,10 @@ const Homeus = () => {
       }
     }
   };
-
+  console.log(gallery);
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
       <Banner />
-
       <ChooseUs />
 
       <motion.section
@@ -146,13 +144,13 @@ const Homeus = () => {
             }}
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            {galerry && galerry.length > 0 ? (
+            {gallery && gallery.length > 0 ? (
               <div className="relative overflow-hidden rounded-2xl transform-style-3d shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 z-10 rounded-2xl pointer-events-none"></div>
                 <video
                   ref={videoRef}
                   src={
-                    import.meta.env.VITE_APP_API_URL_IMAGE + galerry[0].mediaUrl
+                    import.meta.env.VITE_APP_API_URL_IMAGE + gallery[0]?.mediaUrl
                   }
                   className="w-full h-full object-cover transform transition-all duration-300 hover:scale-105"
                   muted

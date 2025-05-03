@@ -63,13 +63,13 @@ const About = () => {
 
 
     useEffect(() => {
-        if (!gallery.length) {
+        if (!gallery?.length) {
             dispatch(GetGalerry());
         }
     }, [dispatch, gallery.length]);
 
     useEffect(() => {
-        if (gallery.length > 0) {
+        if (gallery?.length > 0) {
             const firstMedia = gallery[0]?.mediaUrl;
             setVideoUrl(`${import.meta.env.VITE_APP_API_URL_IMAGE}${firstMedia}`);
         }
