@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Users, Award, Briefcase, Star, Code, Mail, Globe, Linkedin} from 'lucide-react';
+import {Users, Award,} from 'lucide-react';
 import {useDispatch, useSelector} from 'react-redux';
 import {GetGalerry} from '../../Api/bannerApi';
 import TeamSection from '../../components/TeamSection/TeamSection';
