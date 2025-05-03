@@ -4,7 +4,7 @@ import { GetBanner, GetChooseUs, GetColleague, GetCourse, GetCourseById, GetGale
 const initialState = {
   data: [],
   choose: [],
-  galerry: [],
+  gallery: [],
   course: [],
   videoReview: [],
   textReview: [],
@@ -14,12 +14,12 @@ const initialState = {
   loading: {
     banner: false,
     chooseUs: false,
-
     course: false,
     videoReview: false,
     textReview: false,
     activeCourse: false,
     news: false,
+    gallery:false
 
   },
   error: {
@@ -69,9 +69,12 @@ export const BannerSlicer = createSlice({
     // GetGalerry
 
     builder.addCase(GetGalerry.fulfilled, (state, action) => {
-      state.loading.galerry = false;
-      state.galerry = action.payload;
+      state.loading.gallery = false;
+      state.gallery = action.payload;
     });
+    builder.addCase(GetGalerry.pending, (state) => {
+      state.loading.gallery = true;
+    })
 
 
     // GetCourse
