@@ -39,7 +39,7 @@ const truncateText = (text, maxLength = 160) => {
 
 const Course = () => {
   const dispatch = useDispatch();
-  const { t, i18n } = useTranslation();
+  const { t, i18n:{language}, i18n } = useTranslation();
   const [showAll, setShowAll] = useState(false);
   const { course } = useSelector((state) => state.BannerSlicer);
   
@@ -47,8 +47,8 @@ const Course = () => {
   // Генерируем случайные рейтинги для каждого курса
   
   useEffect(() => {
-    dispatch(GetCourse());
-  }, [dispatch]);
+    dispatch(GetCourse(language));
+  }, [dispatch, language]);
   
   const [courseRatings, setCourseRatings] = useState({});
   // Генерируем рейтинги при изменении списка курсов

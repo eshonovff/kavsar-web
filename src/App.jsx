@@ -56,7 +56,7 @@ const App = () => {
   return (
     <ScrollProvider>
 
-    <div className="min-w-[400px]">
+    <div className="min-w-[400px] select-none">
        <Toaster/>
        <RouterProvider router={router}/> 
        <ToastContainer />

@@ -11,58 +11,19 @@ import { GetBanner } from '../../Api/bannerApi';
 import { Button } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useScroll } from '../../hook/ScrollProvider';
+import YoutubeStyleLoader from '../loading/YoutubeStyleLoader';
 
 // Компоненти индикатори загрузка дар услуби YouTube
-const YoutubeStyleLoader = () => {
-  return (
-    <div className="youtube-style-loader-container h-[450px] max-w-[1500px] w-full m-auto px-1 sm:px-2 md:px-4 lg:px-16 pt-10 flex flex-col items-center justify-center">
-      {/* Плейсхолдер баннер */}
-      <div className="w-full h-[400px] bg-gray-200 rounded-lg relative overflow-hidden">
-        {/* Gradient animation overlay */}
-        <div className="youtube-loading-shimmer absolute inset-0"></div>
-        
-        {/* Скелетон контент */}
-        <div className="absolute bottom-8 left-8 w-1/2">
-          <div className="h-10 bg-gray-300 rounded-md mb-4 w-3/4"></div>
-          <div className="h-6 bg-gray-300 rounded-md mb-2 w-full"></div>
-          <div className="h-6 bg-gray-300 rounded-md mb-4 w-4/5"></div>
-          <div className="h-10 bg-gray-300 rounded-md w-40"></div>
-        </div>
-      </div>
-      
-      {/* CSS барои анимацияи загрузка */}
-      <style jsx>{`
-        .youtube-loading-shimmer {
-          background: linear-gradient(90deg, 
-            rgba(0,0,0,0) 0%, 
-            rgba(255,255,255,0.15) 50%, 
-            rgba(0,0,0,0) 100%);
-          background-size: 200% 100%;
-          animation: shimmer 1.5s infinite;
-        }
-        
-        @keyframes shimmer {
-          0% {
-            background-position: -200% 0;
-          }
-          100% {
-            background-position: 200% 0;
-          }
-        }
-      `}</style>
-    </div>
-  );
-};
 
 const Banner = () => {
   const dispatch = useDispatch();
   const { data: banners, loading } = useSelector((state) => state.BannerSlicer);
-  const { t } = useTranslation();
+  const { t, i18n:{language}} = useTranslation();
   const { requestRef, scrollToSection } = useScroll();
   
   useEffect(() => {
-    dispatch(GetBanner());
-  }, [dispatch]);
+    dispatch(GetBanner(language));
+  }, [dispatch, language]);
 
   // Нишон додани индикатори загрузка дар услуби YouTube
   if (loading?.banner) {

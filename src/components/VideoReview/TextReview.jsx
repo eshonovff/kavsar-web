@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetTextReview, postTextReview } from '../../Api/bannerApi'; // Добавлен импорт postTextReview
+import { GetTextReview, postTextReview } from '../../Api/bannerApi';
 
 // Компонент рейтинга со звездами
 const StarRating = ({ rating }) => {
-  const ratingValue = rating || 0; // Защита от undefined или null
+  const ratingValue = rating || 0;
   
   return (
     <div className="flex items-center">
@@ -21,6 +21,85 @@ const StarRating = ({ rating }) => {
         </svg>
       ))}
     </div>
+  );
+};
+
+// Новый компонент модального окна для полного отзыва
+const FullReviewModal = ({ isOpen, onClose, review }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl transform transition-all">
+        <div className="bg-gradient-to-r from-blue-500 to-violet-500 p-5">
+          <h3 className="text-xl font-bold text-white">
+            {review.fullName || "Пользователь"}
+          </h3>
+        </div>
+        
+        <button 
+          onClick={onClose}
+          className="absolute top-5 right-5 text-white hover:text-gray-200 transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        
+        <div className="p-6">
+          <div className="mb-4">
+            <StarRating rating={review.grade} />
+          </div>
+          
+          <div className="text-gray-600">
+            <div className="text-blue-300 opacity-50 text-4xl leading-none mb-1">"</div>
+            <p className="whitespace-pre-wrap">{review.text || "Отзыв"}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Обновленный компонент карточки отзыва
+const ReviewCard = ({ review }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  return (
+    <>
+      <div 
+        className="bg-white rounded-3xl shadow-lg p-6 relative overflow-hidden cursor-pointer transition-transform hover:scale-105"
+        onMouseEnter={() => setIsModalOpen(true)}
+      >
+        <div className="absolute bottom-0 right-0 w-48 h-48 bg-blue-100/50 rounded-full translate-x-1/4 translate-y-1/4 z-0"></div>
+        
+        <div className="relative z-10">
+          <div className="flex items-start mb-4">
+            <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            
+            <div>
+              <h3 className="font-bold text-gray-800">{review.fullName || "Пользователь"}</h3>
+              <StarRating rating={review.grade} />
+            </div>
+          </div>
+          
+          <div className="text-gray-600">
+            <div className="text-blue-300 opacity-50 text-4xl leading-none mb-1">"</div>
+            <p className="line-clamp-2">{review.text || "Отзыв"}</p>
+          </div>
+        </div>
+      </div>
+
+      <FullReviewModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        review={review}
+      />
+    </>
   );
 };
 
@@ -42,7 +121,6 @@ const FeedbackModal = ({ isOpen, onClose }) => {
       [name]: value
     });
     
-    // Очищаем ошибку для поля при его изменении
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -76,15 +154,12 @@ const FeedbackModal = ({ isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Проверяем валидность формы
     if (!validateForm()) {
       return;
     }
     
-    // Получаем текущий язык
     const currentLang = i18n.language || 'ru';
     
-    // Создаем объект с данными для отправки
     const reviewData = {
       textTj: formData.text, 
       textRu: "",
@@ -94,20 +169,16 @@ const FeedbackModal = ({ isOpen, onClose }) => {
       approved: false
     };
     
-    // Заполняем поле текста в зависимости от текущего языка
     if (currentLang === 'tj') {
       reviewData.textTj = formData.text;
     } else if (currentLang === 'en') {
       reviewData.textEn = formData.text;
     } else {
-      // По умолчанию русский
       reviewData.textRu = formData.text;
     }
     
-    // Отправляем данные
     dispatch(postTextReview(reviewData));
     
-    // Закрываем модальное окно и сбрасываем форму
     setFormData({
       fullName: '',
       text: '',
@@ -215,35 +286,6 @@ const FeedbackModal = ({ isOpen, onClose }) => {
   );
 };
 
-// Компонент карточки отзыва
-const ReviewCard = ({ review }) => {
-  return (
-    <div className="bg-white rounded-3xl shadow-lg p-6 relative overflow-hidden">
-      <div className="absolute bottom-0 right-0 w-48 h-48 bg-blue-100/50 rounded-full translate-x-1/4 translate-y-1/4 z-0"></div>
-      
-      <div className="relative z-10">
-        <div className="flex items-start mb-4">
-          <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mr-3">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-          </div>
-          
-          <div>
-            <h3 className="font-bold text-gray-800">{review.fullName || "Пользователь"}</h3>
-            <StarRating rating={review.grade} />
-          </div>
-        </div>
-        
-        <div className="text-gray-600">
-          <div className="text-blue-300 opacity-50 text-4xl leading-none mb-1">"</div>
-          <p className="line-clamp-2">{review.text || "Отзыв"}</p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const TextReview = () => {
   const dispatch = useDispatch();
   const { textReview } = useSelector((state) => state.BannerSlicer);
@@ -254,27 +296,20 @@ const TextReview = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   
   useEffect(() => {
-    // Get current language from i18n
     const currentLang = i18n.language || 'Ru';
-    // Map i18n language codes to API language codes if needed
     const apiLang = currentLang === 'en' ? 'En' : 
                     currentLang === 'tj' ? 'Tj' : 'Ru';
                     
-    // Dispatch API call
     dispatch(GetTextReview({
       lang: apiLang
     }));
   }, [dispatch, i18n.language]);
 
-  // Фильтруем только подтвержденные отзывы
   const approvedReviews = textReview ? textReview.filter(review => review.approved) : [];
-
-  // Безопасное разделение отзывов на ряды, защита от отсутствия данных
   const firstRowReviews = approvedReviews?.length > 0 ? approvedReviews.slice(0, Math.min(3, approvedReviews.length)) : [];
   const secondRowReviews = approvedReviews?.length > 3 ? approvedReviews.slice(3, Math.min(6, approvedReviews.length)) : [];
   const remainingReviews = approvedReviews?.length > 6 ? approvedReviews.slice(6) : [];
   
-  // Функция для проверки наличия переполнения
   const checkOverflow = () => {
     const container = scrollContainer.current;
     if (container) {
@@ -283,7 +318,6 @@ const TextReview = () => {
     }
   };
   
-  // Отслеживание положения скролла
   const handleScroll = () => {
     const container = scrollContainer.current;
     if (container) {
@@ -291,7 +325,6 @@ const TextReview = () => {
     }
   };
   
-  // Функции для прокрутки
   const scrollLeft = () => {
     const container = scrollContainer.current;
     if (container) {
@@ -306,7 +339,6 @@ const TextReview = () => {
     }
   };
   
-  // Инициализация и обработка изменения размера окна
   useEffect(() => {
     const container = scrollContainer.current;
     
@@ -326,7 +358,6 @@ const TextReview = () => {
     };
   }, [approvedReviews]);
 
-  // Определение, показывать ли кнопки прокрутки
   const canScrollLeft = scrollPosition > 0;
   const canScrollRight = scrollContainer.current 
     ? scrollPosition < scrollContainer.current.scrollWidth - scrollContainer.current.clientWidth
@@ -335,9 +366,7 @@ const TextReview = () => {
   return (
     <div className="bg-gradient-to-b from-indigo-50 via-blue-50 to-white py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Section Header */}
         <div className="text-center mb-16">
-        
           <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700 inline-block mb-4">
             {t('TextReview.title') || 'Отзывы наших учеников'}
           </h2>
@@ -346,9 +375,7 @@ const TextReview = () => {
           </p>
         </div>
 
-        {/* Сетка отзывов */}
         <div className="relative">
-          {/* Первый ряд отзывов (до 3) */}
           {firstRowReviews.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               {firstRowReviews.map(review => (
@@ -357,7 +384,6 @@ const TextReview = () => {
             </div>
           )}
           
-          {/* Второй ряд отзывов (с 4 по 6) */}
           {secondRowReviews.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               {secondRowReviews.map(review => (
@@ -366,7 +392,6 @@ const TextReview = () => {
             </div>
           )}
           
-          {/* Оставшиеся отзывы с горизонтальной прокруткой */}
           {remainingReviews.length > 0 && (
             <div className="relative">
               <div 
@@ -386,7 +411,6 @@ const TextReview = () => {
                 </div>
               </div>
               
-              {/* Кнопки прокрутки */}
               {hasOverflow && (
                 <>
                   <button 
@@ -414,7 +438,6 @@ const TextReview = () => {
           )}
         </div>
         
-        {/* Leave Review Button */}
         <div className="flex justify-center mt-12">
           <button 
             onClick={() => setIsModalOpen(true)}
@@ -433,7 +456,6 @@ const TextReview = () => {
         </div>
       </div>
       
-      {/* Modal for adding reviews */}
       <FeedbackModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 

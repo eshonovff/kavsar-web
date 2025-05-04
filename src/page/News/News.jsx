@@ -17,7 +17,7 @@ const News = () => {
   
   // Загрузка новостей при монтировании компонента или изменении языка
   useEffect(() => {
-    dispatch(GetNews());
+    dispatch(GetNews(i18n.language));
   }, [dispatch, i18n.language]); // Добавил зависимость от языка
 
   // Загрузка курсов при выборе новости

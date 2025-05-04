@@ -47,7 +47,7 @@ const MaterialTag = ({ text }) => {
 const CoursesByID = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n:{language} } = useTranslation();
 
   // Предполагаем, что в Redux-хранилище есть активный курс
   const { activeCourse, course } = useSelector((state) => state.BannerSlicer);
@@ -64,12 +64,12 @@ const CoursesByID = () => {
 
     // Безопасная загрузка данных курса
     if (id) {
-      dispatch(GetCourseById({ id }));
+      dispatch(GetCourseById({ id,language }));
     }
     
     // Загрузка списка всех курсов
-    dispatch(GetCourse());
-  }, [id, dispatch, t]); // Добавляем t в зависимости, чтобы реагировать на изменения языка
+    dispatch(GetCourse(language));
+  }, [id, dispatch, language]); // Добавляем t в зависимости, чтобы реагировать на изменения языка
 
   // Если курс не найден
   if (!activeCourse) {

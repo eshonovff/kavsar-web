@@ -6,13 +6,11 @@ import { Menu, MenuItem, IconButton, Typography, Avatar, CircularProgress } from
 import tajFlag from "/src/assets/tajikistan.png";
 import russFlag from "/src/assets/russia.png";
 import engFlag from "/src/assets/united-kingdom.png";
-import { useDispatch } from "react-redux";
 
 import "./LanguageSelect.css";
 import { GetBanner, GetChooseUs, GetColleague, GetCourse, GetCourseById, GetNews, GetTextReview, GetVideoReview } from "../../Api/bannerApi";
 
 const LanguageSelect = () => {
-  const dispatch = useDispatch();
   const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,18 +46,7 @@ const LanguageSelect = () => {
     setTimeout(() => {
       i18n.changeLanguage(lang.code);
       setFlag(lang.flag);
-      
-      // Делаем API-запросы для обновления данных
-      dispatch(GetBanner(lang.nick));
-      dispatch(GetChooseUs(lang.nick));
-      dispatch(GetCourse(lang.nick));
-      dispatch(GetVideoReview(lang.nick));
-      dispatch(GetTextReview(lang.nick));
-      dispatch(GetCourseById(lang.nick));
-      dispatch(GetNews(lang.nick));
-      dispatch(GetColleague(lang.nick));
-      
-      // Выключаем состояние загрузки
+
       setIsLoading(false);
     }, 2000);
   };
@@ -71,14 +58,6 @@ const LanguageSelect = () => {
       const langObj = languages.find(lang => lang.code === savedLanguage);
       if (langObj && i18n.language !== savedLanguage) {
         i18n.changeLanguage(savedLanguage);
-        dispatch(GetBanner(langObj.nick));
-        dispatch(GetChooseUs(langObj.nick));
-        dispatch(GetCourse(langObj.nick));
-        dispatch(GetVideoReview(langObj.nick));
-        dispatch(GetTextReview(langObj.nick));
-        dispatch(GetCourseById(langObj.nick));
-        dispatch(GetNews(langObj.nick));
-        dispatch(GetColleague(langObj.nick));
       }
     }
   }, []);

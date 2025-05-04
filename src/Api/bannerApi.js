@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 // get Banner
 export const GetBanner = createAsyncThunk(
   "BannerSlicer/GetBanner",
-  async (lang = "Ru") => {
+  async (language) => {
     try {
-      const { data } = await axiosRequest.get(`api/Banner?language=${lang}`);
+      const { data } = await axiosRequest.get(`api/Banner?language=${language}`);
       return data.data;
     } catch (error) {
       console.error(error);
@@ -19,9 +19,9 @@ export const GetBanner = createAsyncThunk(
 
 export const GetChooseUs = createAsyncThunk(
   "BannerSlicer/GetChooseUs",
-  async (lang = "Ru") => {
+  async (language) => {
     try {
-      const { data } = await axiosRequest.get(`api/ChooseUs?language=${lang}`);
+      const { data } = await axiosRequest.get(`api/ChooseUs?language=${language}`);
       return data.data;
     } catch (error) {
       console.error(error);
@@ -52,9 +52,9 @@ export const GetGalerry = createAsyncThunk(
 
 export const GetCourse = createAsyncThunk(
   "BannerSlicer/GetCourse",
-  async (lang = "Ru") => {
+  async (language) => {
     try {
-      const { data } = await axiosRequest.get(`api/Course?language=${lang}`);
+      const { data } = await axiosRequest.get(`api/Course?language=${language}`);
       return data.data;
     } catch (error) {
       console.error(error);
@@ -66,11 +66,10 @@ export const GetCourse = createAsyncThunk(
 // Get Course By Id
 export const GetCourseById = createAsyncThunk(
   "BannerSlicer/GetCourseById",
-  async ({id, lang = "Ru"} ) => {
-    console.log(lang);
+  async ({id, language} ) => {
     
     try {
-      const { data } = await axiosRequest.get(`api/Course/${id}?language=${lang}`);
+      const { data } = await axiosRequest.get(`api/Course/${id}?language=${language}`);
       return data.data;
     } catch (error) {
       console.error(error);
@@ -85,9 +84,9 @@ export const GetCourseById = createAsyncThunk(
 
 export const GetVideoReview = createAsyncThunk(
   "BannerSlicer/GetVideoReview",
-  async (lang = "Ru") => {
+  async (language) => {
     try {
-      const { data } = await axiosRequest.get(`api/VideoReview?language=${lang}`);
+      const { data } = await axiosRequest.get(`api/VideoReview?language=${language}`);
       return data.data;
     } catch (error) {
       console.error(error);
@@ -195,9 +194,9 @@ export const postTextReview = createAsyncThunk(
 // Get news
 export const GetNews = createAsyncThunk(
   "BannerSlicer/GetNews",
-  async (lang = "Ru") => {
+  async (language) => {
     try {
-      const { data } = await axiosRequest.get(`api/News?language=${lang}`);
+      const { data } = await axiosRequest.get(`api/News?language=${language}`);
       return data.data;
     } catch (error) {
       console.error(error);
@@ -213,9 +212,9 @@ export const GetNews = createAsyncThunk(
 
 export const GetColleague = createAsyncThunk(
   "BannerSlicer/GetColleague",
-  async (lang = "Ru") => {
+  async (language) => {
     try {
-      const { data } = await axiosRequest.get(`api/Colleague/colleagueWithIcons?language=${lang}`);
+      const { data } = await axiosRequest.get(`api/Colleague/colleagueWithIcons?language=${language}`);
       return data.data;
     } catch (error) { 
       

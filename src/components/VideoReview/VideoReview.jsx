@@ -25,11 +25,11 @@ const VideoReviewTailwind = () => {
   const { videoReview } = useSelector((state) => state.BannerSlicer);
   const [activeVideoId, setActiveVideoId] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const { t } = useTranslation();
+  const { t, i18n:{language} } = useTranslation();
 
   useEffect(() => {
-    dispatch(GetVideoReview());
-  }, [dispatch]);
+    dispatch(GetVideoReview(language));
+  }, [dispatch,language]);
 
   // Track window width for responsive adjustments
   useEffect(() => {

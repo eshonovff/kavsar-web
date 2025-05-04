@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { GetCourse } from "../../Api/bannerApi";
+import YoutubeStyleLoader from "../../components/loading/YoutubeStyleLoader";
 
 // Компонент рейтинга в виде плашки с звездой
 const RatingBadge = ({ rating }) => {
@@ -31,8 +32,8 @@ const MaterialTag = ({ text }) => {
 
 const Courses = () => {
   const dispatch = useDispatch();
-  const { course } = useSelector((state) => state.BannerSlicer);
-  const { t } = useTranslation();
+  const { course, loading } = useSelector((state) => state.BannerSlicer);
+  const { t , i18n:{language}} = useTranslation();
   
   // Состояние только для поиска
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,8 +42,8 @@ const Courses = () => {
   const [courseRatings, setCourseRatings] = useState({});
 
   useEffect(() => {
-    dispatch(GetCourse());
-  }, [dispatch]);
+    dispatch(GetCourse(language));
+  }, [dispatch, language]);
   
   // Генерируем рейтинги при изменении списка курсов
   useEffect(() => {
@@ -65,6 +66,10 @@ const Courses = () => {
     return matchesSearch;
   }) : [];
 
+
+  if (loading?.course) {
+    return <YoutubeStyleLoader />;
+  }
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       {/* Hero Section */}
