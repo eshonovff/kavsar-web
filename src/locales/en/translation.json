@@ -1,0 +1,253 @@
+{
+    "nav": {
+        "home": "Home",
+        "courses": "Courses",
+        "news": "News",
+        "library": "Library",
+        "about": "About"
+    },
+    "auth": {
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "logout": "Logout"
+    },
+    "banner": {
+        "badge": "Start Learning Today",
+        "title": "Welcome to Kavsar",
+        "description": "Your trusted education platform for learning and growth. Join thousands of students on their journey to success.",
+        "button": "Get Started"
+    },
+    "chooseUs": {
+        "badge": "Why Choose Us",
+        "title": "Everything you need to",
+        "titleHighlight": "succeed",
+        "description": "We provide the best learning experience with our comprehensive platform designed for your success."
+    },
+    "ourCompany": {
+        "title": "Our Educational Center",
+        "description": "The Kavsar Academy Educational Center, founded in Dushanbe in 2021, has grown into one of the leading educational institutions in Tajikistan. With a clear and effective system, the center goes beyond theory by offering practical training with native speakers, ensuring visible results in as little as one week.",
+        "noVideo": "No video available",
+        "stats": {
+            "experience": "Years of Experience",
+            "graduates": "Graduates",
+            "branches": "Branches",
+            "staff": "Staff"
+        }
+    },
+    "coursesPreview": {
+        "badge": "Our Courses",
+        "title": "Popular Courses",
+        "viewAll": "View All",
+        "materials": "Materials",
+        "moreInfo": "More Info"
+    },
+    "courses": {
+        "searchPlaceholder": "Search courses...",
+        "materials": "Materials",
+        "moreInfo": "More Info",
+        "noResults": "No courses found"
+    },
+    "courseDetails": {
+        "backToCourses": "Back to Courses",
+        "months": "months",
+        "enroll": "Enroll Now",
+        "curriculum": "Course Curriculum",
+        "instructors": "Instructors",
+        "notFound": "Course not found",
+        "viewOtherCourses": "View Other Courses"
+    },
+    "videoReviews": {
+        "badge": "Student Reviews",
+        "title": "What Our Students Say",
+        "student": "Student"
+    },
+    "feedback": {
+        "badge": "Student Testimonials",
+        "title": "What Our Students Write",
+        "description": "Find out what our graduates say about studying at our academy",
+        "leaveReview": "Leave a Review",
+        "yourName": "Your Name",
+        "namePlaceholder": "Enter your name",
+        "yourRating": "Your Rating",
+        "yourReview": "Your Review",
+        "reviewPlaceholder": "Tell us about your experience...",
+        "submitReview": "Submit Review",
+        "sending": "Sending...",
+        "successMessage": "Thank you! Your review has been submitted and will be visible after moderation.",
+        "errorMessage": "Error submitting review. Please try again.",
+        "verifiedStudent": "Verified Student",
+        "moreFeedbacks": "More reviews"
+    },
+    "contactForm": {
+        "badge": "Contact Us",
+        "title": "Get in Touch",
+        "description": "Fill out the form below and we will contact you as soon as possible",
+        "name": "Full Name",
+        "namePlaceholder": "Enter your name",
+        "phone": "Phone Number",
+        "email": "Email",
+        "findUs": "How did you find us?",
+        "selectOption": "Select an option",
+        "message": "Message",
+        "messagePlaceholder": "Your message...",
+        "submit": "Send Request",
+        "sending": "Sending...",
+        "freeLesson": "Register for your first FREE lesson!",
+        "success": "Your request has been sent successfully!",
+        "error": "Error sending request. Please try again.",
+        "privacyNote": "By submitting this form, you agree to our privacy policy",
+        "courseInquiry": "I want to get information about the {{courseName}} course",
+        "contactUs": "Contact Us",
+        "phoneLabel": "Phone",
+        "emailLabel": "Email",
+        "addressLabel": "Address",
+        "address": "Dushanbe, Nemat Karabaev St, 29",
+        "options": {
+            "friends": "Friends",
+            "other": "Other"
+        }
+    },
+    "pages": {
+        "home": {
+            "title": "Welcome",
+            "description": "Welcome to Kavsar"
+        },
+        "courses": {
+            "title": "Courses",
+            "description": "Explore our courses"
+        },
+        "news": {
+            "title": "News",
+            "description": "Latest news and updates"
+        },
+        "library": {
+            "title": "Library",
+            "description": "Browse our library"
+        },
+        "about": {
+            "title": "About Us",
+            "description": "Learn more about us",
+            "academyTitle": "About Our Academy",
+            "p1": "We don't just create courses — we form a community where everyone can grow, develop and realize their dreams. Kavsar Academy is a territory of opportunities, where learning turns into an inspiring journey.",
+            "p2": "We offer courses for all ages and interests: IT and programming, medical training, culinary arts, foreign languages, preschool development, driving school, sewing and much more. Here everyone finds what brings them closer to their goal.",
+            "p3": "Our teachers are not just specialists, but true mentors who wholeheartedly share knowledge and support at every step. Modern methods, practice from day one and an individual approach make learning with us effective and inspiring.",
+            "footer1": "📚 Learn with comfort,",
+            "footer2": "🌍 develop without boundaries",
+            "footer3": "✨ build your future with us!",
+            "success": "Kavsar Academy — where your success begins.",
+            "achievements": {
+                "title": "Our Achievements",
+                "graduates": "Graduates",
+                "programs": "Educational Programs",
+                "recommend": "Recommend Us",
+                "experience": "Years of Experience"
+            },
+            "team": {
+                "title": "Our Team",
+                "director": "Director",
+                "instructors": "Our Instructors",
+                "about": "About Teacher"
+            }
+        }
+    },
+    "location": {
+        "badge": "Our Location",
+        "title": "Find Us",
+        "description": "We are always happy to see you at our office",
+        "contactInfo": "Contact Information",
+        "phone": "Phone",
+        "address": "Address",
+        "addressValue": "Dushanbe, Nemat Karabaev St, 29",
+        "call": "Call",
+        "route": "Route",
+        "workingHours": "Working Hours",
+        "workingHoursValue": "Mon-Sat: 9:00 - 20:00"
+    },
+    "enrollment": {
+        "badge": "Course Enrollment",
+        "title": "Enroll in a Course",
+        "description": "Fill out the form and we will contact you to arrange classes",
+        "formTitle": "Enrollment Form",
+        "name": "Full Name",
+        "namePlaceholder": "Enter your name",
+        "phone": "Phone Number",
+        "course": "Select a Course",
+        "selectCourse": "Choose a course",
+        "time": "Preferred Time",
+        "selectTime": "Select time",
+        "submit": "Enroll Now",
+        "sending": "Sending...",
+        "success": "Your enrollment has been submitted successfully!",
+        "error": "Error submitting. Please try again.",
+        "privacyNote": "By submitting this form, you agree to our privacy policy",
+        "successTitle": "Enrollment Successful!",
+        "successMessage": "Thank you for enrolling! We will contact you shortly.",
+        "newEnrollment": "New Enrollment",
+        "timeOptions": {
+            "morning": "Morning (09:00 - 12:00)",
+            "afternoon": "Afternoon (12:00 - 17:00)",
+            "evening": "Evening (17:00 - 21:00)",
+            "weekend": "Weekends"
+        },
+        "benefits": {
+            "certificate": {
+                "title": "Certificate",
+                "desc": "Official certificate"
+            },
+            "groups": {
+                "title": "Small Groups",
+                "desc": "Up to 15 people"
+            },
+            "flexible": {
+                "title": "Flexible Schedule",
+                "desc": "Morning, day, evening"
+            },
+            "practice": {
+                "title": "Practice",
+                "desc": "Real projects"
+            }
+        },
+        "whyEnroll": "Why Study With Us?",
+        "reasons": {
+            "reason1": "Experienced instructors with practical knowledge",
+            "reason2": "Modern curriculum tailored to market demands",
+            "reason3": "Job placement assistance after graduation",
+            "reason4": "First FREE lesson to get acquainted"
+        },
+        "contactTitle": "Have Questions?",
+        "callUs": "Call Us",
+        "workingHours": "Working Hours"
+    },
+    "library": {
+        "searchPlaceholder": "Search books...",
+        "noResults": "No materials found",
+        "description": "Find books and educational materials",
+        "moreInfo": "Read More"
+    },
+    "libraryDetails": {
+        "backToLibrary": "Back to Library",
+        "author": "Author",
+        "publicationDate": "Publication Date",
+        "description": "Description",
+        "downloadPdf": "Download PDF"
+    },
+    "footer": {
+        "copyright": "© 2026 LLC \"Korvoni Hunar\" Educational Center \"Kavsar Academy\". All rights reserved.",
+        "quickLinks": "Quick Links",
+        "contact": "Contact",
+        "newsletter": "Newsletter",
+        "newsletterDesc": "Subscribe to get the latest updates and news.",
+        "emailPlaceholder": "Your email",
+        "privacyPolicy": "Privacy Policy",
+        "termsOfService": "Terms of Service"
+    },
+    "teacherDetails": {
+        "backToTeam": "Back to Team",
+        "aboutTitle": "About the Teacher",
+        "skills": "Skills"
+    },
+    "newsDetails": {
+        "backToNews": "Back to News",
+        "notFound": "News not found"
+    }
+}
